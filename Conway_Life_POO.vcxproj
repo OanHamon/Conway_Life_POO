@@ -131,6 +131,9 @@
   <ItemGroup>
     <ClCompile Include="Conway_Life_POO.cpp" />
   </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="GameData.h" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
