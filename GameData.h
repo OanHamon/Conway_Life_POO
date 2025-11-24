@@ -14,7 +14,7 @@ class CellState
 {
 public:
     CellState() : Obstacle(false) {};
-    CellState(bool _ObsState) : Obstacle(!_ObsState) {};
+    CellState(bool _ObsState) : Obstacle(_ObsState) {};
     virtual ~CellState() {}
     virtual bool isAlive() const = 0;
     virtual bool isObstacle() const = 0;
@@ -96,6 +96,17 @@ class GridData {
     vector<vector<bool>> initialStates;
 };
 
+struct Pattern {
+    string name;
+    vector<pair<int, int>> cells;  // Coordonnées relatives (dx, dy)
+
+    Pattern(const string& n) : name(n) {}
+
+    void addCell(int dx, int dy) {
+        cells.push_back({ dx, dy });
+    }
+};
+
 
 class Grid
 {
@@ -126,12 +137,12 @@ public:
             for (int j = 0; j < cols; j++) {
                 
                 if (_data[i][j] == 1) {
-                    //cells[i][j] = new Cell(i, j, new AliveState());
-                    cells[i][j] = new Cell(i, j, new AliveState(true));
+                    cells[i][j] = new Cell(i, j, new AliveState(false));
+                    
                 }
                 else {
-                    //cells[i][j] = new Cell(i, j, new DeadState());
-                    cells[i][j] = new Cell(i, j, new DeadState(true));
+                    cells[i][j] = new Cell(i, j, new DeadState(false));
+                    
                 }
             }
         }
@@ -146,6 +157,8 @@ public:
         delete rule;
     }
 
+    int getRows()const { return rows; }
+    int getCols()const { return cols; }
     Cell* getCell(int _row, int _col)
     {
         if (_row < 0 || _row >= rows || _col < 0 || _col >= cols) {
@@ -271,6 +284,35 @@ public:
         else {
             // Cellule morte : naît avec exactement 3 voisins
             if (aliveNeighbors == 8) {
+                return new AliveState();
+            }
+            else {
+                return new DeadState();
+            }
+        }
+    }
+
+};  
+class LowSocialLifeRule : public Rule
+{
+public:
+    CellState* computeNextState(Cell* cell, Grid* grid)
+    {
+        bool isCurrentlyAlive = cell->isAlive();
+        int aliveNeighbors = grid->countAliveNeighbors(cell);
+
+        if (isCurrentlyAlive) {
+            // Cellule vivante : survit avec 2 ou 3 voisins
+            if (aliveNeighbors ==1 ) {
+                return new AliveState();
+            }
+            else {
+                return new DeadState();
+            }
+        }
+        else {
+            // Cellule morte : naît avec exactement 3 voisins
+            if (aliveNeighbors == 1) {
                 return new AliveState();
             }
             else {

@@ -1,8 +1,9 @@
-#include <SFML/Graphics.hpp>
+﻿#include <SFML/Graphics.hpp>
 #include <vector>
 #include <ctime>
+#include <iostream>
 #include <cstdlib>
-#include "GameData.h"
+#include "GameLoop.h"
 
 using namespace std;
 using namespace sf;
@@ -14,44 +15,36 @@ const int gridHeight = 80;
 Grid* grid;
 
 
+//int main() {
+//    Game game;
+//    game.MainMenu();
+//    srand(time(0));
+//
+//    Rule* conway = new ConwayRule();
+//    Grid* grid = new Grid(gridWidth, gridHeight, conway);
+//
+//    GraphicalDisplay* display = new GraphicalDisplay( gridWidth * cellSize,gridHeight * cellSize,cellSize );
 
-void renderGrid(RenderWindow& window) {
-
-    window.clear();
-    RectangleShape visual_cell(Vector2f(cellSize - 1.0f, cellSize - 1.0f));
-    for (int x = 0; x < gridWidth; ++x) {
-        for (int y = 0; y < gridHeight; ++y) {
-            Cell* currentCell = grid->getCell(x, y);
-            if (currentCell != nullptr && currentCell->isAlive())
-            {
-                visual_cell.setPosition(x * cellSize, y * cellSize);
-                window.draw(visual_cell);
-            }
-        }
-    }
-    window.display();
-};
+//    while (display->isOpen()) {
+//        display->handleEvents();
+//
+//        display->show(grid);
+//
+//        grid->computeNextGen();
+//
+//        sleep(milliseconds(display->getDelay()));
+//    }
+//
+//    // Nettoyage
+//    delete display;
+//    delete grid;
+//
+//    return 0;
+//}
 
 int main() {
-    srand(time(0));
-    Rule* conway = new ConwayRule();
-
-    grid = new Grid(gridWidth, gridHeight, conway);
-
-    RenderWindow window(VideoMode(gridWidth * cellSize, gridHeight * cellSize), "Game of Life");
-
-
-    while (window.isOpen()) {
-        Event event;
-        while (window.pollEvent(event)) {
-            if (event.type == Event::Closed)
-                window.close();
-        }
-
-        renderGrid(window);
-        grid->computeNextGen();
-        sleep(milliseconds(100));
-    }
-    delete grid;
+    Game game;
+    game.run();
     return 0;
-};
+}
+
