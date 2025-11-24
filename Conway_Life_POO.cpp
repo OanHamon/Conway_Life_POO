@@ -2,7 +2,7 @@
 #include <vector>
 #include <ctime>
 #include <cstdlib>
-#include "GridData.h"
+#include "GameData.h"
 
 using namespace std;
 using namespace sf;
@@ -35,7 +35,9 @@ void renderGrid(RenderWindow& window) {
 int main() {
     srand(time(0));
     Rule* conway = new ConwayRule();
+
     grid = new Grid(gridWidth, gridHeight, conway);
+
     RenderWindow window(VideoMode(gridWidth * cellSize, gridHeight * cellSize), "Game of Life");
 
 

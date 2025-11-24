@@ -13,24 +13,37 @@ class Rule;
 class CellState
 {
 public:
+    CellState() : Obstacle(false) {};
+    CellState(bool _ObsState) : Obstacle(!_ObsState) {};
     virtual ~CellState() {}
     virtual bool isAlive() const = 0;
-    virtual CellState* clone() const = 0;
+    virtual bool isObstacle() const = 0;
+
+protected :
+    bool Obstacle;
 };
 
 class AliveState : public CellState
 {
 public:
+    AliveState() : CellState(false) {}
+    AliveState(bool _ObsState) : CellState(_ObsState) {}
     bool isAlive() const override { return true; }
-    CellState* clone() const override { return new AliveState(); }
+    bool isObstacle() const override { return Obstacle; }
+
 };
 
 class DeadState : public CellState
 {
 public:
+    DeadState() : CellState(false) {}
+    DeadState(bool _ObsState) : CellState(_ObsState) {}
     bool isAlive() const override { return false; }
-    CellState* clone() const override { return new DeadState(); }
+    bool isObstacle() const override { return Obstacle; }
+
 };
+
+
 
 
 class Cell
@@ -77,6 +90,11 @@ public:
     virtual CellState* computeNextState(Cell* cell, Grid* grid) = 0;
 };
 
+class GridData {
+    int rows;
+    int cols;
+    vector<vector<bool>> initialStates;
+};
 
 
 class Grid
@@ -89,13 +107,31 @@ public:
         for (int i = 0; i < rows; i++) {
             cells[i].resize(cols);
             for (int j = 0; j < cols; j++) {
-                // CORRECTION : 1 = vivante, 0 = morte
                 int randomValue = rand() % 2;
                 if (randomValue == 1) {
                     cells[i][j] = new Cell(i, j, new AliveState());
                 }
                 else {
                     cells[i][j] = new Cell(i, j, new DeadState());
+                }
+            }
+        }
+    }
+    Grid(int _rows, int _cols, Rule* _rule, vector<vector<int>> _data)
+        : rows(_rows), cols(_cols), rule(_rule)
+    {
+        cells.resize(rows);
+        for (int i = 0; i < rows; i++) {
+            cells[i].resize(cols);
+            for (int j = 0; j < cols; j++) {
+                
+                if (_data[i][j] == 1) {
+                    //cells[i][j] = new Cell(i, j, new AliveState());
+                    cells[i][j] = new Cell(i, j, new AliveState(true));
+                }
+                else {
+                    //cells[i][j] = new Cell(i, j, new DeadState());
+                    cells[i][j] = new Cell(i, j, new DeadState(true));
                 }
             }
         }
@@ -133,16 +169,15 @@ public:
             for (int n = -1; n <= 1; n++) {
                 if (i == 0 && n == 0) continue;
 
-                int neighborRow = x + i;
-                int neighborCol = y + n;
+                int neighborRow = (x + i + rows) % rows;
+                int neighborCol = (y + n + cols) % cols;
 
-                if (neighborRow >= 0 && neighborRow < rows &&
-                    neighborCol >= 0 && neighborCol < cols)
-                {
-                    if (cells[neighborRow][neighborCol]->isAlive()) {
-                        cmpt++;
-                    }
-                }
+               
+               
+               if (cells[neighborRow][neighborCol]->isAlive()) {
+                   cmpt++;
+               }
+                
             }
         }
 
@@ -158,7 +193,9 @@ public:
             {
                 Cell* cell = cells[i][n];
                 CellState* nxtState = rule->computeNextState(cell, this);
-                cell->setNextState(nxtState);
+                if(!cell->getCurrentState()->isObstacle()){ cell->setNextState(nxtState); }
+
+
             }
         }
 
@@ -205,6 +242,35 @@ public:
         else {
             // Cellule morte : naît avec exactement 3 voisins
             if (aliveNeighbors == 3) {
+                return new AliveState();
+            }
+            else {
+                return new DeadState();
+            }
+        }
+    }
+
+};  
+class HardcoreRule : public Rule
+{
+public:
+    CellState* computeNextState(Cell* cell, Grid* grid)
+    {
+        bool isCurrentlyAlive = cell->isAlive();
+        int aliveNeighbors = grid->countAliveNeighbors(cell);
+
+        if (isCurrentlyAlive) {
+            // Cellule vivante : survit avec 2 ou 3 voisins
+            if (aliveNeighbors == 7 || aliveNeighbors == 8) {
+                return new AliveState();
+            }
+            else {
+                return new DeadState();
+            }
+        }
+        else {
+            // Cellule morte : naît avec exactement 3 voisins
+            if (aliveNeighbors == 8) {
                 return new AliveState();
             }
             else {
