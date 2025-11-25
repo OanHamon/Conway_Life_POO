@@ -1,6 +1,7 @@
 #pragma once
 #include <vector>
-#include <cstdlib>  
+#include <cstdlib>
+#include <omp.h>
 using namespace std;
 
 
@@ -200,15 +201,12 @@ public:
     void computeNextGen()
     {
 
-        for (int i = 0; i < rows; i++)
-        {
-            for (int n = 0; n < cols; n++)
-            {
-                Cell* cell = cells[i][n];
+        #pragma omp parallel for collapse(2)
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < cols; j++) {
+                Cell* cell = cells[i][j];
                 CellState* nxtState = rule->computeNextState(cell, this);
-                if(!cell->getCurrentState()->isObstacle()){ cell->setNextState(nxtState); }
-
-
+                if (!cell->getCurrentState()->isObstacle()) { cell->setNextState(nxtState); }
             }
         }
 
