@@ -129,13 +129,22 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Cell.cpp" />
     <ClCompile Include="Conway_Life_POO.cpp" />
+    <ClCompile Include="Game.cpp" />
+    <ClCompile Include="GraphicalDisplay.cpp" />
     <ClCompile Include="File_manager.cpp" />
+    <ClCompile Include="Game.h" />
+    <ClCompile Include="Grid.cpp" />
+    <ClCompile Include="Rules.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Cell.h" />
+    <ClInclude Include="Display.h" />
     <ClInclude Include="File_manager.h" />
     <ClInclude Include="GameData.h" />
-    <ClInclude Include="GameLoop.h" />
+    <ClInclude Include="Grid.h" />
+    <ClInclude Include="Rules.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
