@@ -322,3 +322,32 @@ public:
     }
 
 };  
+class HighLifeRule : public Rule
+{
+public:
+    CellState* computeNextState(Cell* cell, Grid* grid)
+    {
+        bool isCurrentlyAlive = cell->isAlive();
+        int aliveNeighbors = grid->countAliveNeighbors(cell);
+
+        if (isCurrentlyAlive) {
+            // Cellule vivante : survit avec 2 ou 3 voisins
+            if (aliveNeighbors ==1 || aliveNeighbors == 2 || aliveNeighbors == 3 || aliveNeighbors == 4 || aliveNeighbors == 5 || aliveNeighbors == 8) {
+                return new AliveState();
+            }
+            else {
+                return new DeadState();
+            }
+        }
+        else {
+            // Cellule morte : naît avec exactement 3 voisins
+            if (aliveNeighbors == 1 || aliveNeighbors == 2 || aliveNeighbors == 3|| aliveNeighbors == 4|| aliveNeighbors == 5|| aliveNeighbors == 6) {
+                return new AliveState();
+            }
+            else {
+                return new DeadState();
+            }
+        }
+    }
+
+};  

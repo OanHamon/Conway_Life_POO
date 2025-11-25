@@ -29,5 +29,8 @@
     <ClInclude Include="File_manager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="GameLoop.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

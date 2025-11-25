@@ -39,7 +39,7 @@ public:
         window->setFramerateLimit(60);
 
 
-        if (!font.loadFromFile(R"(C:\Users\oanha\Documents\Conway_Life_POO\Fonts\NotoSans.ttf)")) {
+        if (!font.loadFromFile(R"(Fonts\NotoSans.ttf)")) {
             // gestion d'erreur
         }
 
@@ -98,6 +98,8 @@ public:
 
    
     int getDelay() const {return delay;}
+    int getRequestedRuleIndex() const { return requestedRuleIndex; }
+    void resetRequestedRuleIndex() { requestedRuleIndex = -1; }
 
     void show(Grid* grid) override {
         clear();
@@ -154,12 +156,21 @@ public:
                             break;
 
                         case 2:  // Restart
-                            //To-Do Fonction Resart
+                            restartRequested = true;
                             break;
 
-                        case 3: cout << "Rule1\n"; break;
-                        case 4: cout << "Rule2\n"; break;
-                        case 5: cout << "Rule3\n"; break;
+                        case 3: cout << "Rule1\n"; 
+                            requestedRuleIndex = 0;
+                            restartRequested = true;
+                            break;
+                        case 4: cout << "Rule2\n";
+                            requestedRuleIndex = 1;
+                            restartRequested = true;
+                            break;
+                        case 5: cout << "Rule3\n";
+                            requestedRuleIndex = 2;
+                            restartRequested = true;
+                            break;
                         }
                     }
                 }
@@ -185,6 +196,7 @@ private:
 
     int iterationCounter = 0;
     sf::Text iterationText;
+    int requestedRuleIndex = -1;
 
 
 
@@ -248,6 +260,14 @@ Choisissez le mode :
         return mode;
     }
 
+
+    void resetGrid(Grid*& grid, int gridWidth, int gridHeight) {
+        delete grid;  // Libérer l'ancienne grille
+        Rule* conway = new ConwayRule();
+        grid = new Grid(gridWidth, gridHeight, conway);
+    }
+
+
     int askIterations()
     {
         int maxIter = 0;
@@ -279,10 +299,45 @@ Choisissez le mode :
         );
 
         int iterationsDone = 0;
+        int currentRuleIndex = 0;
 
         while (display->isOpen()) {
 
             display->handleEvents();
+
+            if (display->restartRequested) {
+
+                int ruleIndex = display->getRequestedRuleIndex();
+                if (ruleIndex != -1) {
+                    currentRuleIndex = ruleIndex;
+                    display->resetRequestedRuleIndex();
+                }
+
+                Rule* newRule = nullptr;
+                switch (currentRuleIndex) {
+                case 0:
+                    newRule = new ConwayRule();
+                    cout << "Règle : Conway's Game of Life\n";
+                    break;
+                case 1:
+                    newRule = new HardcoreRule();
+                    cout << "Règle : Hardcore\n";
+                    break;
+                case 2:
+                    newRule = new HighLifeRule();
+                    cout << "Règle : Low Social Life\n";
+                    break;
+                default:
+                    newRule = new ConwayRule();
+                }
+
+                delete grid;
+                grid = new Grid(gridWidth, gridHeight, newRule);
+                iterationsDone = 0;
+                display->setIterationCounter(0);
+                display->restartRequested = false;
+                display->state = PAUSED;  // Optionnel : pause après restart
+            }
 
             // Game state
             if (display->state == RUNNING) {
@@ -308,8 +363,15 @@ Choisissez le mode :
             sf::sleep(sf::milliseconds(display->getDelay()));
         }
 
+
+
         delete display;
         delete grid;
+    }
+
+    void runConsole(int _maxIter)
+    {
+        cout << "ererere";
     }
 };
 
