@@ -7,16 +7,6 @@
 
 using namespace std;
 
-struct Pattern {
-    string name;
-    vector<pair<int, int>> cells;
-
-    Pattern(const string& n) : name(n) {}
-
-    void addCell(int dx, int dy) {
-        cells.push_back({ dx, dy });
-    }
-};
 
 class Grid
 {
