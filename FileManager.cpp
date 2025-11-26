@@ -1,7 +1,7 @@
 #pragma once
-#include "File_manager.h"
+#include "FileManager.h"
 
-bool File_manager::write(string _msg) {
+bool FileManager::write(string _msg) {
     ofstream f(path);
     if (!f) {
         cerr << "Erreur lors de l'ouverture du fichier !" << endl;
@@ -12,7 +12,7 @@ bool File_manager::write(string _msg) {
     return true;
 }
 
-bool File_manager::read(string* _output) {
+bool FileManager::read(string* _output) {
     ifstream f(path, ios::in);
     if (!f) {
         cerr << "Erreur : impossible d'ouvrir le fichier !" << endl;
@@ -24,26 +24,26 @@ bool File_manager::read(string* _output) {
     return true;
 }
 
-bool File_manager::clearFile() {
+bool FileManager::clearFile() {
     return write("");
 }
 
-File_manager::File_manager(string _path) : path(_path) {
+FileManager::FileManager(string _path) : path(_path) {
     ifstream infile(path);
     if (!infile.good()) {
         write("");
     }
 }
 
-string File_manager::getPath() {
+string FileManager::getPath() {
     return path;
 }
 
-void File_manager::setPath(string _path) {
+void FileManager::setPath(string _path) {
     this->path = _path;
 }
 
-vector<vector<int>> File_manager::getGrid() {
+vector<vector<int>> FileManager::getGrid() {
     string data;
     if (read(&data)) {
         stringstream ss(data);
@@ -74,7 +74,7 @@ vector<vector<int>> File_manager::getGrid() {
     return {};
 }
 
-bool File_manager::saveGrid(const vector<vector<int>>& _grid) {
+bool FileManager::saveGrid(const vector<vector<int>>& _grid) {
     if (_grid.empty()) {
         cerr << "Erreur: la grille est vide." << endl;
         return false;
