@@ -4,22 +4,23 @@
 CellState* ConwayRule::computeNextState(Cell* cell, Grid* grid)
 {
     bool isCurrentlyAlive = cell->isAlive();
+    bool isObstacle = cell->getCurrentState()->isObstacle();
     int aliveNeighbors = grid->countAliveNeighbors(cell);
 
     if (isCurrentlyAlive) {
         if (aliveNeighbors == 2 || aliveNeighbors == 3) {
-            return new AliveState();
+            return new AliveState(isObstacle);
         }
         else {
-            return new DeadState();
+            return new DeadState(isObstacle);
         }
     }
     else {
         if (aliveNeighbors == 3) {
-            return new AliveState();
+            return new AliveState(isObstacle);
         }
         else {
-            return new DeadState();
+            return new DeadState(isObstacle);
         }
     }
 }
@@ -53,15 +54,10 @@ CellState* LowSocialLifeRule::computeNextState(Cell* cell, Grid* grid)
     int aliveNeighbors = grid->countAliveNeighbors(cell);
 
     if (isCurrentlyAlive) {
-        if (aliveNeighbors == 1) {
-            return new AliveState();
-        }
-        else {
-            return new DeadState();
-        }
+        return new DeadState();
     }
     else {
-        if (aliveNeighbors == 1) {
+        if (aliveNeighbors == 2) {
             return new AliveState();
         }
         else {
