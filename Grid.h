@@ -24,6 +24,7 @@ public:
     int countAliveNeighbors(Cell* cell);
     void computeNextGen();
     void UpdateCells();
+    vector<vector<int>> getGridInt();
     void placePattern(const Patern& pattern, int centerRow, int centerCol);
 
     Cell* getCellFromPixel(int pixelX, int pixelY, int cellSize);

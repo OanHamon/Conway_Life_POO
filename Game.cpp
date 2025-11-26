@@ -1,6 +1,10 @@
 #include "Game.h"
 #include "Rule.h"
+#include "ConsoleDisplay.h"
+#include "GraphicalDisplay.h"
+#include "FileManager.h"
 #include <iostream>
+#include <string>
 #include <limits>
 #include <ctime>
 
@@ -11,11 +15,9 @@ Game::Game() {}
 void Game::run()
 {
     int mode = MainMenu();
-    int maxIter = 0;
 
     if (mode == 0) {
-        maxIter = askIterations();
-        //runConsole(maxIter);
+        runConsole();
     }
     else {
         maxIter = 100000;
@@ -50,20 +52,6 @@ void Game::resetGrid(Grid*& grid, int gridWidth, int gridHeight)
     delete grid;
     Rule* conway = new ConwayRule();
     grid = new Grid(gridWidth, gridHeight, conway);
-}
-
-int Game::askIterations()
-{
-    int maxIter = 0;
-    cout << "Execution limitee a combien d'iterations ? ";
-
-    while (!(cin >> maxIter) || maxIter <= 0) {
-        cout << "Nombre invalide, recommence : ";
-        cin.clear();
-        cin.ignore(numeric_limits<streamsize>::max(), '\n');
-    }
-
-    return maxIter;
 }
 
 void Game::runGraphical(int maxIter)
@@ -150,14 +138,47 @@ void Game::runGraphical(int maxIter)
             break;
         }
 
-        sf::sleep(sf::milliseconds(display->getDelay()));
+        sleep(milliseconds(display->getDelay()));
     }
 
     delete display;
     delete grid;
 }
 
-void Game::runConsole(int _maxIter)
+void Game::runConsole()
 {
-    cout << "ererere";
+    ConsoleDisplay* display = new ConsoleDisplay();
+
+    int _maxIter = display->askIterations();
+    int n_iter = 0;
+
+    string path_in = display->askPath();
+
+    FileManager f_in(path_in);
+
+    vector<vector<int>> gridInt_in = f_in.getGrid();
+
+    string path_out = path_in.substr(0, path_in.length() - 4) + "_out/generation0.txt";
+    FileManager* f_out = new FileManager(path_out);
+    f_out->saveGrid(gridInt_in);
+
+    Rule* conway = new ConwayRule();
+    Grid* grid = new Grid(gridInt_in.size(), gridInt_in[0].size(), conway, gridInt_in);
+
+    while (n_iter<_maxIter) {
+        display->clear();
+        display->show(grid);
+
+        path_out = path_in.substr(0, path_in.length() - 4) +  "_out/generation" + to_string(n_iter + 1) + ".txt";
+        f_out = new FileManager(path_out);
+
+        grid->computeNextGen();
+
+        vector<vector<int>> gridInt_out = grid->getGridInt();
+
+        f_out->saveGrid(gridInt_out);
+
+        n_iter++;
+        sleep(milliseconds(500));
+    }
 }

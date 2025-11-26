@@ -1,26 +1,31 @@
-ï»¿#pragma once
+#pragma once
 #include "FileManager.h"
+#include <filesystem>
+#include <fstream>
+#include <sstream>
+#include <iostream>
+#include <vector>
+#include <string>
 
-bool FileManager::write(string _msg) {
-    ofstream f(path);
-    if (!f) {
-        cerr << "Erreur lors de l'ouverture du fichier !" << endl;
+namespace fs = std::filesystem;
+
+bool FileManager::write(const std::string _msg) {
+    std::ofstream f(path, std::ios::out | std::ios::trunc);
+    if (!f.is_open()) {
+        std::cerr << "Erreur lors de l'ouverture du fichier !" << std::endl;
         return false;
     }
     f << _msg;
-    f.close();
     return true;
 }
 
-bool FileManager::read(string* _output) {
-    ifstream f(path, ios::in);
-    if (!f) {
-        cerr << "Erreur : impossible d'ouvrir le fichier !" << endl;
+bool FileManager::read(std::string* _output) {
+    std::ifstream f(path, std::ios::in);
+    if (!f.is_open()) {
+        std::cerr << "Erreur : impossible d'ouvrir le fichier !" << std::endl;
         return false;
     }
-    string content((istreambuf_iterator<char>(f)), istreambuf_iterator<char>());
-    *_output = content;
-    f.close();
+    *_output = std::string((std::istreambuf_iterator<char>(f)), std::istreambuf_iterator<char>());
     return true;
 }
 
@@ -28,81 +33,69 @@ bool FileManager::clearFile() {
     return write("");
 }
 
-FileManager::FileManager(string _path) : path(_path) {
-    ifstream infile(path);
-    if (!infile.good()) {
+FileManager::FileManager(const std::string _path) : path(_path) {
+
+    fs::path p(path);
+    if (!p.parent_path().empty() && !fs::exists(p.parent_path())) {
+        fs::create_directories(p.parent_path());
+    }
+
+    if (!fs::exists(p)) {
         write("");
     }
+
 }
 
-string FileManager::getPath() {
+std::string FileManager::getPath() {
     return path;
 }
 
-void FileManager::setPath(string _path) {
-    this->path = _path;
-}
+std::vector<std::vector<int>> FileManager::getGrid() {
+    std::string data;
+    if (!read(&data)) return {};
 
-vector<vector<int>> FileManager::getGrid() {
-    string data;
-    if (read(&data)) {
-        stringstream ss(data);
-        int rows, cols;
+    std::stringstream ss(data);
+    int rows, cols;
+    if (!(ss >> rows >> cols) || rows <= 0 || cols <= 0) {
+        std::cerr << "Erreur: dimensions invalides." << std::endl;
+        return {};
+    }
 
-        if (!(ss >> rows >> cols)) {
-            cerr << "Erreur: dimensions invalides." << endl;
-            return {};
-        }
-        if (rows <= 0 || cols <= 0) {
-            cerr << "Erreur: dimensions nï¿½gatives ou nulles." << endl;
-            return {};
-        }
-
-        vector<vector<int>> grid(rows, vector<int>(cols));
-
-        for (int i = 0; i < rows; i++) {
-            for (int j = 0; j < cols; j++) {
-                if (!(ss >> grid[i][j])) {
-                    cerr << "Erreur: donnï¿½es insuffisantes ou invalides ï¿½ la position (" << i << "," << j << ")." << endl;
-                    return {};
-                }
+    std::vector<std::vector<int>> grid(rows, std::vector<int>(cols));
+    for (int i = 0; i < rows; i++) {
+        for (int j = 0; j < cols; j++) {
+            if (!(ss >> grid[i][j])) {
+                std::cerr << "Erreur: données insuffisantes ou invalides à (" << i << "," << j << ")." << std::endl;
+                return {};
             }
         }
-
-        return grid;
     }
-    return {};
+    return grid;
 }
 
-bool FileManager::saveGrid(const vector<vector<int>>& _grid) {
-    if (_grid.empty()) {
-        cerr << "Erreur: la grille est vide." << endl;
+bool FileManager::saveGrid(const std::vector<std::vector<int>>& _grid) {
+    if (_grid.empty() || _grid[0].empty()) {
+        std::cerr << "Erreur: la grille est vide ou invalide." << std::endl;
         return false;
     }
 
-    int row = _grid.size();
-    int col = _grid[0].size();
-    if (col == 0) {
-        cerr << "Erreur: la grille n'a pas de colonnes." << endl;
-        return false;
-    }
-
+    int rows = _grid.size();
+    int cols = _grid[0].size();
     for (const auto& r : _grid) {
-        if ((int)r.size() != col) {
-            cerr << "Erreur: lignes de tailles diffï¿½rentes." << endl;
+        if ((int)r.size() != cols) {
+            std::cerr << "Erreur: lignes de tailles différentes." << std::endl;
             return false;
         }
     }
 
-    string data;
-    data += to_string(row) + " " + to_string(col) + "\n";
-
-    for (int i = 0; i < row; i++) {
-        for (int j = 0; j < col; j++) {
-            data += to_string(_grid[i][j]) + " ";
+    std::ostringstream oss;
+    oss << rows << " " << cols << "\n";
+    for (const auto& row : _grid) {
+        for (int val : row) {
+            oss << val << " ";
         }
-        data += "\n";
+        oss << "\n";
     }
 
-    return write(data);
+    return write(oss.str());
 }

@@ -54,16 +54,16 @@ Grid::Grid(int _rows, int _cols, Rule* _rule, vector<vector<int>> _data)
             if (_data[i][j] == 1) {
                 cells[i][j] = new Cell(i, j, new AliveState(false));
             }
-            if (_data[i][j] == 0) {
+            else if (_data[i][j] == 0) {
                 cells[i][j] = new Cell(i, j, new DeadState(false));
             }
-            if (_data[i][j] == 2) {
+            else if (_data[i][j] == 2) {
                 cells[i][j] = new Cell(i, j, new AliveState(true));
             }
-            if (_data[i][j] == -1) {
+            else if (_data[i][j] == -1) {
                 cells[i][j] = new Cell(i, j, new DeadState(true));
             }
-            else { std::cerr << "valeur de cellule invalide pour la grille\n"; }
+            else { std::cerr << "valeur(" << _data[i][j] << ") de cellule invalide pour la grille\n"; }
         }
     }
 }
@@ -148,6 +148,23 @@ void Grid::UpdateCells()
         }
     }
 }
+
+vector<vector<int>> Grid::getGridInt()
+{
+    vector<vector<int>> grid(rows, vector<int>(cols, 0));
+
+    for (int i = 0; i < rows; i++) {
+        for (int n = 0; n < cols; n++) {
+            if (!cells[i][n]->getCurrentState()->isObstacle()) {
+                grid[i][n] = cells[i][n]->isAlive() ? 1 : 0;
+            }
+            else {
+                grid[i][n] = cells[i][n]->isAlive() ? 2 : -1;
+            }
+        }
+    }
+    return grid;
+}
 void Grid::placePattern(const Patern& pattern, int centerRow, int centerCol) {
     // Calculer l'offset pour centrer le pattern
     int offsetRow = centerRow - pattern.height / 2;
@@ -160,7 +177,7 @@ void Grid::placePattern(const Patern& pattern, int centerRow, int centerCol) {
         if (targetRow >= 0 && targetRow < rows &&
             targetCol >= 0 && targetCol < cols) {
 
-            // Remplacer l'état de la cellule
+            // Remplacer l'Ã©tat de la cellule
             
             cells[targetRow][targetCol]->setNextState(new AliveState());
             cells[targetRow][targetCol]->updateState();
