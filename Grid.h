@@ -13,6 +13,7 @@ class Grid
 {
 public:
     Grid(int _rows, int _cols, Rule* _rule);
+    Grid(int _rows, int _cols, Rule* _rule, bool _zero);
     Grid(int _rows, int _cols, Rule* _rule, vector<vector<int>> _data);
     ~Grid();
 

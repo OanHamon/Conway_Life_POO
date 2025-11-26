@@ -20,6 +20,30 @@ Grid::Grid(int _rows, int _cols, Rule* _rule)
     }
 }
 
+Grid::Grid(int _rows, int _cols, Rule* _rule, bool _zero)
+    : rows(_rows), cols(_cols), rule(_rule)
+{
+    cells.resize(rows);
+    for (int i = 0; i < rows; i++) {
+        cells[i].resize(cols);
+        for (int j = 0; j < cols; j++) {
+            if(!_zero)
+            {
+                int randomValue = rand() % 2;
+                if (randomValue == 1) {
+                    cells[i][j] = new Cell(i, j, new AliveState());
+                }
+                else {
+                    cells[i][j] = new Cell(i, j, new DeadState());
+                }
+                
+            }
+            cells[i][j] = new Cell(i, j, new DeadState());
+
+        }
+    }
+}
+
 Grid::Grid(int _rows, int _cols, Rule* _rule, vector<vector<int>> _data)
     : rows(_rows), cols(_cols), rule(_rule)
 {
@@ -137,7 +161,7 @@ void Grid::placePattern(const Patern& pattern, int centerRow, int centerCol) {
             targetCol >= 0 && targetCol < cols) {
 
             // Remplacer l'état de la cellule
-            delete cells[targetRow][targetCol]->getCurrentState();
+            
             cells[targetRow][targetCol]->setNextState(new AliveState());
             cells[targetRow][targetCol]->updateState();
         }
