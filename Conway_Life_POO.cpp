@@ -1,12 +1,4 @@
-﻿#include <SFML/Graphics.hpp>
-#include <vector>
-#include <ctime>
-#include <iostream>
-#include <cstdlib>
-#include "GameLoop.h"
-
-using namespace std;
-using namespace sf;
+﻿#include "Game.h"
 
 const int cellSize = 10;
 const int gridWidth = 80;
@@ -14,6 +6,11 @@ const int gridHeight = 80;
 
 Grid* grid;
 
+int main() {
+    Game game;
+    game.run();
+    return 0;
+}
 
 //int main() {
 //    Game game;
@@ -41,10 +38,4 @@ Grid* grid;
 //
 //    return 0;
 //}
-
-int main() {
-    Game game;
-    game.run();
-    return 0;
-}
 
