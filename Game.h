@@ -8,12 +8,11 @@ class Game {
 public:
     Game();
     void run();
-
-private:
     int MainMenu();
     void resetGrid(Grid*& grid, int gridWidth, int gridHeight);
     int askIterations();
     void resetGrid(Grid*& grid, int gridWidth, int gridHeight);
+    int askIterations();
     void runGraphical(int maxIter);
     void runConsole(int _maxIter);
 };

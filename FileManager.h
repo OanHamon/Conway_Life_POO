@@ -7,7 +7,7 @@
 
 using namespace std;
 
-class File_manager {
+class FileManager {
 private:
     string path;
     bool write(string _msg);
@@ -15,7 +15,7 @@ private:
     bool clearFile();
 
 public:
-    File_manager(string _path);
+    FileManager(string _path);
     string getPath();
     void setPath(string _path);
 

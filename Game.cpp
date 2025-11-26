@@ -3,7 +3,6 @@
 #include <iostream>
 #include <limits>
 #include <ctime>
-#include <SFML/System.hpp>
 
 using namespace std;
 
@@ -16,7 +15,7 @@ void Game::run()
 
     if (mode == 0) {
         maxIter = askIterations();
-        runConsole(maxIter);
+        //runConsole(maxIter);
     }
     else {
         maxIter = 5000;
@@ -88,6 +87,7 @@ void Game::runGraphical(int maxIter)
     int currentRuleIndex = 0;
 
     while (display->isOpen()) {
+
         display->handleEvents();
 
         display->handleEvents(grid);
@@ -104,15 +104,15 @@ void Game::runGraphical(int maxIter)
             switch (currentRuleIndex) {
             case 0:
                 newRule = new ConwayRule();
-                cout << "Règle : Conway's Game of Life\n";
+                cout << "RÃ¨gle : Conway's Game of Life\n";
                 break;
             case 1:
-                newRule = new LowSocialLifeRule();
-                cout << "Règle : High Life\n";
+                newRule = new HighLifeRule();
+                cout << "RÃ¨gle : High Life\n";
                 break;
             case 2:
                 newRule = new DayAndNight();
-                cout << "Règle : Day and Night\n";
+                cout << "RÃ¨gle : Day and Night\n";
                 break;
             default:
                 newRule = new ConwayRule();
@@ -157,6 +157,7 @@ void Game::runGraphical(int maxIter)
     delete grid;
 }
 
-void Game::runConsole(int maxIter) {
-    cout << "Mode console en cours de développement...\n";
+void Game::runConsole(int _maxIter)
+{
+    cout << "ererere";
 }

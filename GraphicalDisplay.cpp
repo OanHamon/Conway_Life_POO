@@ -9,7 +9,7 @@ GraphicalDisplay::GraphicalDisplay(int _windowWidth, int _windowHeight, int cell
     window->setFramerateLimit(60);
 
     if (!font.loadFromFile(R"(Fonts\NotoSans.ttf)")) {
-        cerr << "Erreur chargement police" << endl;
+        // gestion d'erreur
     }
 
 #pragma region Bouton de Gestion
@@ -126,8 +126,6 @@ GraphicalDisplay::~GraphicalDisplay()
         delete label;
     }
     delete window;
-    for (auto b : buttons) delete b;
-    for (auto l : labels) delete l;
 }
 
 void GraphicalDisplay::setIterationCounter(int value)
@@ -217,7 +215,7 @@ void GraphicalDisplay::drawGrid(Grid* grid)
 
 void GraphicalDisplay::handleButtonClick(int buttonIndex) {
     if (buttonIndex < 10) {
-        // Boutons de contrôle (0-9)
+        // Boutons de contrï¿½le (0-9)
         switch (buttonIndex) {
         case 0:  // Pause
             state = (state == RUNNING ? PAUSED : RUNNING);
@@ -262,7 +260,7 @@ void GraphicalDisplay::handleButtonClick(int buttonIndex) {
         if (patternIndex >= 0 && patternIndex < patterns.size()) {
             patternMode = true;
             selectedPatternIndex = patternIndex;
-            cout << "Pattern sélectionné : " << patterns[patternIndex].name << "\n";
+            cout << "Pattern sï¿½lectionnï¿½ : " << patterns[patternIndex].name << "\n";
         }
     }
 }
@@ -296,7 +294,7 @@ void GraphicalDisplay::handleEvents(Grid* grid) {
 
 
             for (int i = 0; i < buttons.size(); i++) {
-                if (buttons[i]->getGlobalBounds().contains(mousePos))             // Vérifier les boutons
+                if (buttons[i]->getGlobalBounds().contains(mousePos))             // Vï¿½rifier les boutons
                 {
                     handleButtonClick(i);
                 }
