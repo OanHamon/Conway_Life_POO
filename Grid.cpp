@@ -30,16 +30,16 @@ Grid::Grid(int _rows, int _cols, Rule* _rule, vector<vector<int>> _data)
             if (_data[i][j] == 1) {
                 cells[i][j] = new Cell(i, j, new AliveState(false));
             }
-            if (_data[i][j] == 0) {
+            else if (_data[i][j] == 0) {
                 cells[i][j] = new Cell(i, j, new DeadState(false));
             }
-            if (_data[i][j] == 2) {
+            else if (_data[i][j] == 2) {
                 cells[i][j] = new Cell(i, j, new AliveState(true));
             }
-            if (_data[i][j] == -1) {
+            else if (_data[i][j] == -1) {
                 cells[i][j] = new Cell(i, j, new DeadState(true));
             }
-            else { std::cerr << "valeur de cellule invalide pour la grille\n"; }
+            else { std::cerr << "valeur(" << _data[i][j] << ") de cellule invalide pour la grille\n"; }
         }
     }
 }
@@ -123,4 +123,21 @@ void Grid::UpdateCells()
             cells[i][n]->updateState();
         }
     }
+}
+
+vector<vector<int>> Grid::getGridInt()
+{
+    vector<vector<int>> grid(rows, vector<int>(cols, 0));
+
+    for (int i = 0; i < rows; i++) {
+        for (int n = 0; n < cols; n++) {
+            if (!cells[i][n]->getCurrentState()->isObstacle()) {
+                grid[i][n] = cells[i][n]->isAlive() ? 1 : 0;
+            }
+            else {
+                grid[i][n] = cells[i][n]->isAlive() ? 2 : -1;
+            }
+        }
+    }
+    return grid;
 }

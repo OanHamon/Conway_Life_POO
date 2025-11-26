@@ -32,6 +32,7 @@ public:
     int countAliveNeighbors(Cell* cell);
     void computeNextGen();
     void UpdateCells();
+    vector<vector<int>> getGridInt();
 
 private:
     int rows;

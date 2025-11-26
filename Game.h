@@ -8,7 +8,6 @@ public:
     void run();
     int MainMenu();
     void resetGrid(Grid*& grid, int gridWidth, int gridHeight);
-    int askIterations();
     void runGraphical(int maxIter);
-    void runConsole(int _maxIter);
+    void runConsole();
 };
