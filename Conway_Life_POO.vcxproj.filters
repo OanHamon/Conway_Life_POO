@@ -21,19 +21,19 @@
     <ClCompile Include="File_manager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Rules.cpp">
+    <ClCompile Include="Cell.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Game.h">
-      <Filter>Header Files</Filter>
+    <ClCompile Include="Rule.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Grid.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="GraphicalDisplay.cpp">
+    <ClCompile Include="Display.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Cell.cpp">
+    <ClCompile Include="GraphicalDisplay.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Game.cpp">
@@ -44,16 +44,25 @@
     <ClInclude Include="File_manager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Rules.h">
+    <ClInclude Include="CellState.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Cell.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Rule.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Grid.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Display.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GraphicalDisplay.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Game.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -1,17 +1,25 @@
 #pragma once
 #include <vector>
+#include <cstdlib>
 #include "Cell.h"
-#include "Rules.h"
+#include "Rule.h"
+#include <string>
 
 using namespace std;
 
-class GridData {
-    int rows;
-    int cols;
-    vector<vector<bool>> initialStates;
+struct Pattern {
+    string name;
+    vector<pair<int, int>> cells;
+
+    Pattern(const string& n) : name(n) {}
+
+    void addCell(int dx, int dy) {
+        cells.push_back({ dx, dy });
+    }
 };
 
-class Grid {
+class Grid
+{
 public:
     Grid(int _rows, int _cols, Rule* _rule);
     Grid(int _rows, int _cols, Rule* _rule, vector<vector<int>> _data);
@@ -20,7 +28,6 @@ public:
     int getRows() const;
     int getCols() const;
     Cell* getCell(int _row, int _col);
-
     void setRule(Rule* newRule);
     int countAliveNeighbors(Cell* cell);
     void computeNextGen();

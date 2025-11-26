@@ -1,42 +1,17 @@
 #pragma once
+#include "CellState.h"
 
-class CellState {
+class Cell
+{
 public:
-    CellState() : Obstacle(false) {}
-    CellState(bool _ObsState) : Obstacle(_ObsState) {}
-    virtual ~CellState() {}
-    virtual bool isAlive() const = 0;
-    virtual bool isObstacle() const = 0;
+    Cell(int _row, int _col, CellState* _state)
+        : row(_row), col(_col), currentState(_state), nextState(nullptr) {
+    }
 
-protected:
-    bool Obstacle;
-};
-
-class AliveState : public CellState {
-public:
-    AliveState() : CellState(false) {}
-    AliveState(bool _ObsState) : CellState(_ObsState) {}
-    bool isAlive() const override;
-    bool isObstacle() const override;
-};
-
-class DeadState : public CellState {
-public:
-    DeadState() : CellState(false) {}
-    DeadState(bool _ObsState) : CellState(_ObsState) {}
-    bool isAlive() const override;
-    bool isObstacle() const override;
-};
-
-class Cell {
-public:
-    Cell(int _row, int _col, CellState* _state);
-    ~Cell();
-
-    int getRow() const;
-    int getCol() const;
-    CellState* getCurrentState() const;
-    bool isAlive() const;
+    int getRow() const { return row; }
+    int getCol() const { return col; }
+    CellState* getCurrentState() const { return currentState; }
+    bool isAlive() const { return currentState->isAlive(); }
 
     void setNextState(CellState* _state);
     void updateState();

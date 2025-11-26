@@ -1,6 +1,5 @@
 #include "Grid.h"
-#include <cstdlib>   // pour rand()
-#include <omp.h>     // pour OpenMP si utilisé
+#include <omp.h>
 
 Grid::Grid(int _rows, int _cols, Rule* _rule)
     : rows(_rows), cols(_cols), rule(_rule)
@@ -37,7 +36,8 @@ Grid::Grid(int _rows, int _cols, Rule* _rule, vector<vector<int>> _data)
     }
 }
 
-Grid::~Grid() {
+Grid::~Grid()
+{
     for (int i = 0; i < rows; i++) {
         for (int j = 0; j < cols; j++) {
             delete cells[i][j];
@@ -46,22 +46,32 @@ Grid::~Grid() {
     delete rule;
 }
 
-int Grid::getRows() const { return rows; }
-int Grid::getCols() const { return cols; }
+int Grid::getRows() const
+{
+    return rows;
+}
 
-Cell* Grid::getCell(int _row, int _col) {
+int Grid::getCols() const
+{
+    return cols;
+}
+
+Cell* Grid::getCell(int _row, int _col)
+{
     if (_row < 0 || _row >= rows || _col < 0 || _col >= cols) {
         return nullptr;
     }
     return cells[_row][_col];
 }
 
-void Grid::setRule(Rule* newRule) {
+void Grid::setRule(Rule* newRule)
+{
     delete rule;
     rule = newRule;
 }
 
-int Grid::countAliveNeighbors(Cell* cell) {
+int Grid::countAliveNeighbors(Cell* cell)
+{
     int x = cell->getRow();
     int y = cell->getCol();
     int cmpt = 0;
@@ -78,11 +88,13 @@ int Grid::countAliveNeighbors(Cell* cell) {
             }
         }
     }
+
     return cmpt;
 }
 
-void Grid::computeNextGen() {
-    #pragma omp parallel for collapse(2) // pool de thread pour les 2 boucle (parcours de la grille) et calcul en paralèle du compute nextState
+void Grid::computeNextGen()
+{
+#pragma omp parallel for collapse(2)
     for (int i = 0; i < rows; i++) {
         for (int j = 0; j < cols; j++) {
             Cell* cell = cells[i][j];
@@ -92,10 +104,12 @@ void Grid::computeNextGen() {
             }
         }
     }
+
     UpdateCells();
 }
 
-void Grid::UpdateCells() {
+void Grid::UpdateCells()
+{
     for (int i = 0; i < rows; i++) {
         for (int n = 0; n < cols; n++) {
             cells[i][n]->updateState();
