@@ -32,7 +32,6 @@ class GraphicalDisplay : public Display{
 public:
     GameState state = RUNNING;
     bool restartRequested = false;
-
     GraphicalDisplay(int _windowWidth, int _windowHeight, int cellSize)
         : cellSize(cellSize), delay(100), windowWidth(_windowWidth), windowHeight(_windowHeight)
     {
@@ -45,8 +44,6 @@ public:
         }
 
         #pragma region Bouton de Gestion
-
-
         int buttonHeight = 60;
         int buttonWidth = 180;
         int spacing = 20;
@@ -63,7 +60,7 @@ public:
             float y = windowHeight + 20.f + row * (buttonHeight + spacing);
 
             button->setPosition(x, y);
-            _buttons.push_back(button);
+            buttons.push_back(button);
 
             sf::Text* label = new sf::Text();
             label->setFont(font);
@@ -79,84 +76,18 @@ public:
         }
         #pragma endregion
 
-        #pragma region Bouton de Vitesse
-
-        int speedButtonHeight = 40;
-        int speedButtonWidth = 120;
-        vector<string> speeds = { "1", "20", "50", "100"};
-
-        for (int i = 0; i < 4; i++) {
-            sf::RectangleShape* button = new sf::RectangleShape();
-            button->setSize(sf::Vector2f(speedButtonWidth, speedButtonHeight));
-            button->setFillColor(sf::Color(100, 100, 200));
-
-            int row = i / 2;
-            int col = i % 2;
-            float x = 20 + (3 * (buttonWidth + 20)) + col * (speedButtonWidth + spacing);
-            float y =50 + windowHeight + 20.f + row * (speedButtonHeight + spacing);
-
-            button->setPosition(x, y);
-            _buttons.push_back(button);
-
-            sf::Text* label = new sf::Text();
-            label->setFont(font);
-            label->setString(speeds[i]);
-            label->setCharacterSize(20);
-            label->setFillColor(sf::Color::White);
-
-            sf::FloatRect textBounds = label->getLocalBounds();
-            label->setOrigin(textBounds.left + textBounds.width / 2.0f,
-                textBounds.top + textBounds.height / 2.0f);
-            label->setPosition(x + speedButtonWidth / 2.0f, y + speedButtonHeight / 2.0f);
-            labels.push_back(label);
-        }
-
-
-        #pragma endregion
-
         #pragma region Bouton de Paternes
 
 
-        int patButtonHeight = 100;
-        int patButtonWidth = 100;
-        vector<string> paterne = { "Paterne 1", "Paterne 2","Paterne 3","Paterne 4","Paterne 5","Paterne 6" };
-
-        for (int i = 0; i < 6; i++) {
-            sf::RectangleShape* button = new sf::RectangleShape();
-            button->setSize(sf::Vector2f(patButtonWidth, patButtonHeight));
-            button->setFillColor(sf::Color(100, 100, 200));
- 
-            float x = windowWidth + 40;
-            float y =  50 + i *(patButtonHeight + spacing);
-
-            button->setPosition(x, y);
-            _buttons.push_back(button);
-
-            sf::Text* label = new sf::Text();
-            label->setFont(font);
-            label->setString(paterne[i]);
-            label->setCharacterSize(20);
-            label->setFillColor(sf::Color::White);
-
-            sf::FloatRect textBounds = label->getLocalBounds();
-            label->setOrigin(textBounds.left + textBounds.width / 2.0f,
-                textBounds.top + textBounds.height / 2.0f);
-            label->setPosition(x + patButtonWidth / 2.0f, y + patButtonHeight / 2.0f);
-            labels.push_back(label);
-        }
 
         #pragma endregion
-
-        #pragma region Compteur Iteration
 
         iterationText.setFont(font);
         iterationText.setCharacterSize(22);
         iterationText.setFillColor(sf::Color::White);
         iterationText.setString("Iterations : 0");
 
-        iterationText.setPosition(20 + (3 * (buttonWidth + 20)), windowHeight + 20);
-        #pragma endregion
-
+        iterationText.setPosition( 20 +(3 * (buttonWidth + 20) ) , windowHeight + 20);
 
 
     }
@@ -182,13 +113,13 @@ public:
         sf::RectangleShape border(sf::Vector2f(width, height));
 
         border.setPosition(0, 0);
-        border.setFillColor(sf::Color::Transparent);    
+        border.setFillColor(sf::Color::Transparent);   
         border.setOutlineThickness(5.f);               
         border.setOutlineColor(sf::Color::White);     
         window->draw(border);
 
-        for (int i = 0; i < _buttons.size(); i++) {
-            window->draw(*_buttons[i]);
+        for (int i = 0; i < buttons.size(); i++) {
+            window->draw(*buttons[i]);
             window->draw(*labels[i]);
         }
         window->draw(iterationText);
@@ -212,8 +143,8 @@ public:
 
                 Vector2f mousePos(event.mouseButton.x, event.mouseButton.y);
 
-                for (int i = 0; i < _buttons.size(); i++) {
-                    if (_buttons[i]->getGlobalBounds().contains(mousePos)) {
+                for (int i = 0; i < buttons.size(); i++) {
+                    if (buttons[i]->getGlobalBounds().contains(mousePos)) {
 
                         switch (i) {
                         case 0:  // Pause
@@ -240,19 +171,6 @@ public:
                             requestedRuleIndex = 2;
                             restartRequested = true;
                             break;
-                        case 6 : cout << "1\n";
-                            setDelay(1);
-                            break;
-                        case 7 : cout << "5\n";
-                            setDelay(20);
-                            break;
-                        case 8 : cout << "10\n";
-                            setDelay(50);
-                            break;
-                        case 9 : cout << "100\n";
-                            setDelay(100);
-                            break;
-
                         }
                     }
                 }
@@ -272,7 +190,7 @@ private:
     int delay;
     int windowWidth;
     int windowHeight;
-    vector<sf::RectangleShape*> _buttons;
+    vector<sf::RectangleShape*> buttons;
     vector<sf::Text*> labels;
     sf::Font font;
 
