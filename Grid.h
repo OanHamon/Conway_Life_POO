@@ -4,24 +4,16 @@
 #include "Cell.h"
 #include "Rule.h"
 #include <string>
+#include "Patterns.h"
 
 using namespace std;
 
-struct Pattern {
-    string name;
-    vector<pair<int, int>> cells;
-
-    Pattern(const string& n) : name(n) {}
-
-    void addCell(int dx, int dy) {
-        cells.push_back({ dx, dy });
-    }
-};
 
 class Grid
 {
 public:
     Grid(int _rows, int _cols, Rule* _rule);
+    Grid(int _rows, int _cols, Rule* _rule,bool _zero);
     Grid(int _rows, int _cols, Rule* _rule, vector<vector<int>> _data);
     ~Grid();
 
@@ -32,6 +24,8 @@ public:
     int countAliveNeighbors(Cell* cell);
     void computeNextGen();
     void UpdateCells();
+    void placePattern(const Pattern& pattern, int centerRow, int centerCol);
+    Cell* getCellFromPixel(int pixelX, int pixelY, int cellSize);
 
 private:
     int rows;

@@ -88,7 +88,7 @@ void Game::runGraphical(int maxIter)
 
     while (display->isOpen()) {
 
-        display->handleEvents();
+        display->handleEvents(grid);
 
         if (display->restartRequested) {
 
@@ -105,7 +105,7 @@ void Game::runGraphical(int maxIter)
                 cout << "Règle : Conway's Game of Life\n";
                 break;
             case 1:
-                newRule = new HighLifeRule();
+                newRule = new LowSocialLifeRule();
                 cout << "Règle : High Life\n";
                 break;
             case 2:
@@ -133,6 +133,11 @@ void Game::runGraphical(int maxIter)
             grid->computeNextGen();
             iterationsDone++;
             display->setIterationCounter(iterationsDone);
+            display->state = PAUSED;
+        }
+        else if (display->state == CLEARED)
+        {
+            grid = new Grid(gridWidth, gridHeight, conway,true);
             display->state = PAUSED;
         }
 

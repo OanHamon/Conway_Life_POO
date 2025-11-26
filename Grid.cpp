@@ -1,6 +1,7 @@
 #include "Grid.h"
 #include <omp.h>
 
+
 Grid::Grid(int _rows, int _cols, Rule* _rule)
     : rows(_rows), cols(_cols), rule(_rule)
 {
@@ -8,6 +9,7 @@ Grid::Grid(int _rows, int _cols, Rule* _rule)
     for (int i = 0; i < rows; i++) {
         cells[i].resize(cols);
         for (int j = 0; j < cols; j++) {
+            
             int randomValue = rand() % 2;
             if (randomValue == 1) {
                 cells[i][j] = new Cell(i, j, new AliveState());
@@ -15,6 +17,30 @@ Grid::Grid(int _rows, int _cols, Rule* _rule)
             else {
                 cells[i][j] = new Cell(i, j, new DeadState());
             }
+
+        }
+    }
+}
+
+
+Grid::Grid(int _rows, int _cols, Rule* _rule, bool _zero)
+    : rows(_rows), cols(_cols), rule(_rule)
+{
+    cells.resize(rows);
+    for (int i = 0; i < rows; i++) {
+        cells[i].resize(cols);
+        for (int j = 0; j < cols; j++) {
+            if(!_zero)
+            {
+                int randomValue = rand() % 2;
+                if (randomValue == 1) {
+                    cells[i][j] = new Cell(i, j, new AliveState());
+                }
+                else {
+                    cells[i][j] = new Cell(i, j, new DeadState());
+                }
+            }
+            cells[i][j] = new Cell(i, j, new DeadState());
         }
     }
 }
@@ -27,14 +53,16 @@ Grid::Grid(int _rows, int _cols, Rule* _rule, vector<vector<int>> _data)
         cells[i].resize(cols);
         for (int j = 0; j < cols; j++) {
             if (_data[i][j] == 1) {
-                cells[i][j] = new Cell(i, j, new AliveState(false));
+                cells[i][j] = new Cell(i, j, new AliveState());
             }
             else {
-                cells[i][j] = new Cell(i, j, new DeadState(false));
+                cells[i][j] = new Cell(i, j, new DeadState());
             }
         }
     }
 }
+
+
 
 Grid::~Grid()
 {
@@ -98,10 +126,12 @@ void Grid::computeNextGen()
     for (int i = 0; i < rows; i++) {
         for (int j = 0; j < cols; j++) {
             Cell* cell = cells[i][j];
-            CellState* nxtState = rule->computeNextState(cell, this);
-            if (!cell->getCurrentState()->isObstacle()) {
-                cell->setNextState(nxtState);
+            if (cell->getCurrentState()->isObstacle()) {
+                continue; 
             }
+
+            CellState* nxtState = rule->computeNextState(cell, this);
+            cell->setNextState(nxtState);
         }
     }
 
@@ -115,4 +145,27 @@ void Grid::UpdateCells()
             cells[i][n]->updateState();
         }
     }
+}
+
+void Grid::placePattern(const Pattern& pattern, int centerRow, int centerCol) {
+    int offsetRow = centerRow - pattern.height / 2;
+    int offsetCol = centerCol - pattern.width / 2;
+
+   
+    for (const auto& cell : pattern.cells) {
+        
+        int targetRow = (offsetRow + cell.first + rows) % rows;
+        int targetCol = (offsetCol + cell.second + cols) % cols;
+        if (targetRow >= 0 && targetRow < rows &&
+            targetCol >= 0 && targetCol < cols) {
+            cells[targetRow][targetCol]->setNextState(new AliveState());
+            cells[targetRow][targetCol]->updateState();
+        }
+    }
+}
+
+Cell* Grid::getCellFromPixel(int pixelX, int pixelY, int cellSize) {
+    int row = pixelX / cellSize;
+    int col = pixelY / cellSize;
+    return getCell(row, col);
 }
