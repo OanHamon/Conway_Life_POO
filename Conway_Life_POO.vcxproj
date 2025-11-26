@@ -130,11 +130,11 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Conway_Life_POO.cpp" />
-    <ClCompile Include="File_manager.cpp" />
+    <ClCompile Include="FileManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CellState.h" />
-    <ClInclude Include="File_manager.h" />
+    <ClInclude Include="FileManager.h" />
     <ClInclude Include="GameData.h" />
     <ClInclude Include="GameLoop.h" />
   </ItemGroup>
