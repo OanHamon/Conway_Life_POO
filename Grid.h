@@ -4,6 +4,7 @@
 #include "Cell.h"
 #include "Rule.h"
 #include <string>
+#include "Patern.h"
 
 using namespace std;
 
@@ -12,6 +13,7 @@ class Grid
 {
 public:
     Grid(int _rows, int _cols, Rule* _rule);
+    Grid(int _rows, int _cols, Rule* _rule, bool _zero);
     Grid(int _rows, int _cols, Rule* _rule, vector<vector<int>> _data);
     ~Grid();
 
@@ -23,6 +25,10 @@ public:
     void computeNextGen();
     void UpdateCells();
     vector<vector<int>> getGridInt();
+    void placePattern(const Patern& pattern, int centerRow, int centerCol);
+
+    Cell* getCellFromPixel(int pixelX, int pixelY, int cellSize);
+
 
 private:
     int rows;

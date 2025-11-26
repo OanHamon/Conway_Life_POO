@@ -20,7 +20,7 @@ void Game::run()
         runConsole();
     }
     else {
-        int maxIter = 5000;
+        maxIter = 100000;
         runGraphical(maxIter);
     }
 }
@@ -76,7 +76,7 @@ void Game::runGraphical(int maxIter)
 
     while (display->isOpen()) {
 
-        display->handleEvents();
+        display->handleEvents(grid);
 
         if (display->restartRequested) {
 
@@ -121,6 +121,13 @@ void Game::runGraphical(int maxIter)
             grid->computeNextGen();
             iterationsDone++;
             display->setIterationCounter(iterationsDone);
+            display->state = PAUSED;
+        }
+        else if(display->state == CLEARED)
+        {
+            grid = new Grid(gridWidth, gridHeight, conway,true);
+            iterationsDone = 0;
+            display->setIterationCounter(0);
             display->state = PAUSED;
         }
 

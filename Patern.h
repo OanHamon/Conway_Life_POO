@@ -9,11 +9,13 @@ struct Patern {
     vector<pair<int, int>> cells;  // Coordonnées relatives (dx, dy)
     int width;
     int height;
+    bool isObstacle = false;
 
     Patern(const string& n) : name(n), width(0), height(0) {}
 
     void addCell(int dx, int dy) {
         cells.push_back({ dx, dy });
+
         // Mettre à jour les dimensions
         if (dx + 1 > width) width = dx + 1;
         if (dy + 1 > height) height = dy + 1;
@@ -22,8 +24,9 @@ struct Patern {
 
 class PaternLibrary {
 public:
+
     static Patern getPoint() {
-        Patern p("Glider");
+        Patern p("Point");
         p.addCell(0, 0);
         return p;
     }
@@ -122,6 +125,7 @@ public:
 
     static vector<Patern> getAllPatterns() {
         return {
+            getPoint(),
             getGlider(),
             getBlinker(),
             getToad(),

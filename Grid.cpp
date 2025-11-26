@@ -20,6 +20,30 @@ Grid::Grid(int _rows, int _cols, Rule* _rule)
     }
 }
 
+Grid::Grid(int _rows, int _cols, Rule* _rule, bool _zero)
+    : rows(_rows), cols(_cols), rule(_rule)
+{
+    cells.resize(rows);
+    for (int i = 0; i < rows; i++) {
+        cells[i].resize(cols);
+        for (int j = 0; j < cols; j++) {
+            if(!_zero)
+            {
+                int randomValue = rand() % 2;
+                if (randomValue == 1) {
+                    cells[i][j] = new Cell(i, j, new AliveState());
+                }
+                else {
+                    cells[i][j] = new Cell(i, j, new DeadState());
+                }
+                
+            }
+            cells[i][j] = new Cell(i, j, new DeadState());
+
+        }
+    }
+}
+
 Grid::Grid(int _rows, int _cols, Rule* _rule, vector<vector<int>> _data)
     : rows(_rows), cols(_cols), rule(_rule)
 {
@@ -140,4 +164,28 @@ vector<vector<int>> Grid::getGridInt()
         }
     }
     return grid;
+}
+void Grid::placePattern(const Patern& pattern, int centerRow, int centerCol) {
+    // Calculer l'offset pour centrer le pattern
+    int offsetRow = centerRow - pattern.height / 2;
+    int offsetCol = centerCol - pattern.width / 2;
+
+    for (const auto& cell : pattern.cells) {
+        int targetRow = (offsetRow + cell.first + rows) % rows;
+        int targetCol = (offsetCol + cell.second + cols) % cols;
+
+        if (targetRow >= 0 && targetRow < rows &&
+            targetCol >= 0 && targetCol < cols) {
+
+            // Remplacer l'état de la cellule
+            
+            cells[targetRow][targetCol]->setNextState(new AliveState());
+            cells[targetRow][targetCol]->updateState();
+        }
+    }
+}
+Cell* Grid::getCellFromPixel(int pixelX, int pixelY, int cellSize) {
+    int row = pixelX / cellSize;
+    int col = pixelY / cellSize;
+    return getCell(row, col);
 }

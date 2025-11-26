@@ -5,8 +5,10 @@ GraphicalDisplay::GraphicalDisplay(int _windowWidth, int _windowHeight, int cell
     : cellSize(cellSize), delay(100), windowWidth(_windowWidth), windowHeight(_windowHeight),
     iterationCounter(0), requestedRuleIndex(-1)
 {
-    window = new RenderWindow(VideoMode(windowWidth + 200, windowHeight + 200), "Game of Life");
+    window = new RenderWindow(VideoMode(windowWidth + 300, windowHeight + 200), "Game of Life");
     window->setFramerateLimit(60);
+
+    paterns = PaternLibrary::getAllPatterns();
 
     if (!font.loadFromFile(R"(Fonts\NotoSans.ttf)")) {
         // gestion d'erreur
@@ -80,21 +82,25 @@ GraphicalDisplay::GraphicalDisplay(int _windowWidth, int _windowHeight, int cell
 #pragma region Bouton de Paternes
     int patButtonHeight = 100;
     int patButtonWidth = 100;
-    vector<string> paterne = { "Paterne 1", "Paterne 2","Paterne 3","Paterne 4","Paterne 5","Paterne 6" };
+    vector<string> paterne = { "Paterne 1", "Paterne 2","Paterne 3","Paterne 4","Paterne 5","Paterne 6","Paterne 1", "Paterne 2","Paterne 3","Paterne 4","Paterne 5","Paterne 6" };
 
-    for (int i = 0; i < 6; i++) {
+    for (int i = 0; i < 12; i++) {
         sf::RectangleShape* button = new sf::RectangleShape();
         button->setSize(sf::Vector2f(patButtonWidth, patButtonHeight));
         button->setFillColor(sf::Color(100, 100, 200));
 
-        float x = windowWidth + 40;
-        float y = 50 + i * (patButtonHeight + spacing);
+        int row = i % 6;
+        int col = i / 6;
+        float x = windowWidth + 40 + col * (patButtonWidth + spacing);
+        float y = 50 + row * (patButtonHeight + spacing);
+
 
         button->setPosition(x, y);
         buttons.push_back(button);
 
         sf::Text* label = new sf::Text();
         label->setFont(font);
+       /* label->setString(paterns[i].name);*/
         label->setString(paterne[i]);
         label->setCharacterSize(20);
         label->setFillColor(sf::Color::White);
@@ -162,6 +168,12 @@ void GraphicalDisplay::show(Grid* grid)
     window->draw(border);
 
     for (int i = 0; i < buttons.size(); i++) {
+        if (patternMode && i >= 10 && i - 10 == selectedPatternIndex) {
+            buttons[i]->setFillColor(sf::Color(150, 255, 150));
+        }
+        else if (i >= 10) {
+            buttons[i]->setFillColor(sf::Color(100, 100, 200));
+        }
         window->draw(*buttons[i]);
         window->draw(*labels[i]);
     }
@@ -170,68 +182,46 @@ void GraphicalDisplay::show(Grid* grid)
     window->display();
 }
 
-void GraphicalDisplay::handleEvents()
-{
-    Event event;
-    while (window->pollEvent(event)) {
-        if (event.type == Event::Closed) {
-            window->close();
-        }
+void GraphicalDisplay::handleEvents(Grid* grid) {
+        Event event;
+        while (window->pollEvent(event)) {
+            if (event.type == Event::Closed) {
+                window->close();
+            }
 
-        if (event.type == Event::MouseButtonPressed &&
-            event.mouseButton.button == Mouse::Left) {
+            if (event.type == Event::MouseButtonPressed &&
+                event.mouseButton.button == Mouse::Left) {
 
-            Vector2f mousePos(event.mouseButton.x, event.mouseButton.y);
+                Vector2f mousePos(event.mouseButton.x, event.mouseButton.y);
 
-            for (int i = 0; i < buttons.size(); i++) {
-                if (buttons[i]->getGlobalBounds().contains(mousePos)) {
-                    switch (i) {
-                    case 0:  // Pause
-                        state = (state == RUNNING ? PAUSED : RUNNING);
-                        break;
-                    case 1:  // Next
-                        state = STEP;
-                        break;
-                    case 2:  // Restart
-                        restartRequested = true;
-                        break;
-                    case 3:
-                        std::cout << "Rule1\n";
-                        requestedRuleIndex = 0;
-                        restartRequested = true;
-                        break;
-                    case 4:
-                        std::cout << "Rule2\n";
-                        requestedRuleIndex = 1;
-                        restartRequested = true;
-                        break;
-                    case 5:
-                        std::cout << "Rule3\n";
-                        requestedRuleIndex = 2;
-                        restartRequested = true;
-                        break;
-                    case 6:
-                        std::cout << "1\n";
-                        setDelay(1);
-                        break;
-                    case 7:
-                        std::cout << "5\n";
-                        setDelay(20);
-                        break;
-                    case 8:
-                        std::cout << "10\n";
-                        setDelay(50);
-                        break;
-                    case 9:
-                        std::cout << "100\n";
-                        setDelay(100);
-                        break;
+                // Vérifier si on clique dans la grille
+                if (patternMode && mousePos.x < windowWidth && mousePos.y < windowHeight) {
+                    // Placer le pattern
+                    int gridX = mousePos.x / cellSize;
+                    int gridY = mousePos.y / cellSize;
+                    
+                    if (selectedPatternIndex >= 0 && selectedPatternIndex < paterns.size()) {
+                        grid->placePattern(paterns[selectedPatternIndex], gridX, gridY);
+                        cout << "Pattern '" << paterns[selectedPatternIndex].name 
+                             << "' placé à (" << gridX << ", " << gridY << ")\n";
                     }
+                    
+                    // Désactiver le mode pattern après placement
+                    patternMode = false;
+                    selectedPatternIndex = -1;
+                    continue;
+                }
+
+                // Vérifier les boutons
+                for (int i = 0; i < buttons.size(); i++) {
+                    if (buttons[i]->getGlobalBounds().contains(mousePos)) {
+                        handleButtonClick(i);
+                    } 
                 }
             }
         }
     }
-}
+
 
 void GraphicalDisplay::setDelay(int milliseconds)
 {
@@ -247,6 +237,7 @@ bool GraphicalDisplay::isOpen() const
 {
     return window->isOpen();
 }
+
 
 void GraphicalDisplay::drawGrid(Grid* grid)
 {
@@ -271,6 +262,58 @@ void GraphicalDisplay::drawGrid(Grid* grid)
                 cell.setPosition(x * cellSize, y * cellSize);
                 window->draw(cell);
             }
+        }
+    }
+}
+
+void GraphicalDisplay::handleButtonClick(int buttonIndex) {
+    if (buttonIndex < 10) {
+        // Boutons de contrôle (0-9)
+        switch (buttonIndex) {
+        case 0:  // Pause
+            state = (state == RUNNING ? PAUSED : RUNNING);
+            break;
+        case 1:  // Next
+            state = STEP;
+            break;
+        case 2:  // Restart
+            state = CLEARED;
+            patternMode = false;
+            selectedPatternIndex = -1;
+            break;
+        case 3: // Rule1
+            requestedRuleIndex = 0;
+            restartRequested = true;
+            break;
+        case 4: // Rule2
+            requestedRuleIndex = 1;
+            restartRequested = true;
+            break;
+        case 5: // Rule3
+            requestedRuleIndex = 2;
+            restartRequested = true;
+            break;
+        case 6: // Speed 1
+            setDelay(1);
+            break;
+        case 7: // Speed 20
+            setDelay(20);
+            break;
+        case 8: // Speed 50
+            setDelay(50);
+            break;
+        case 9: // Speed 100
+            setDelay(100);
+            break;
+        }
+    }
+    else {
+        // Boutons de patterns (10+)
+        int patternIndex = buttonIndex - 10;
+        if (patternIndex >= 0 && patternIndex < paterns.size()) {
+            patternMode = true;
+            selectedPatternIndex = patternIndex;
+            cout << "Pattern sélectionné : " << paterns[patternIndex].name << "\n";
         }
     }
 }
