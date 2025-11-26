@@ -18,7 +18,7 @@ struct Patern {
         if (dx + 1 > width) width = dx + 1;
         if (dy + 1 > height) height = dy + 1;
     }
-};
+}; 
 
 class PaternLibrary {
 public:
