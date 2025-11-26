@@ -1,5 +1,6 @@
 #include "Grid.h"
 #include <omp.h>
+#include <iostream>
 
 Grid::Grid(int _rows, int _cols, Rule* _rule)
     : rows(_rows), cols(_cols), rule(_rule)
@@ -29,9 +30,16 @@ Grid::Grid(int _rows, int _cols, Rule* _rule, vector<vector<int>> _data)
             if (_data[i][j] == 1) {
                 cells[i][j] = new Cell(i, j, new AliveState(false));
             }
-            else {
+            if (_data[i][j] == 0) {
                 cells[i][j] = new Cell(i, j, new DeadState(false));
             }
+            if (_data[i][j] == 2) {
+                cells[i][j] = new Cell(i, j, new AliveState(true));
+            }
+            if (_data[i][j] == -1) {
+                cells[i][j] = new Cell(i, j, new DeadState(true));
+            }
+            else { std::cerr << "valeur de cellule invalide pour la grille\n"; }
         }
     }
 }

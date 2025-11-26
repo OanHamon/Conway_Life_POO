@@ -251,13 +251,23 @@ bool GraphicalDisplay::isOpen() const
 void GraphicalDisplay::drawGrid(Grid* grid)
 {
     RectangleShape cell(Vector2f(cellSize - 1.0f, cellSize - 1.0f));
-    cell.setFillColor(Color(255, 0, 255));
 
     for (int x = 0; x < grid->getRows(); x++) {
         for (int y = 0; y < grid->getCols(); y++) {
             Cell* currentCell = grid->getCell(x, y);
 
-            if (currentCell != nullptr && currentCell->isAlive()) {
+            if (currentCell != nullptr && currentCell->isAlive() && !currentCell->getCurrentState()->isObstacle()) {
+                cell.setFillColor(Color(113, 96, 232)); //vivantes
+                cell.setPosition(x * cellSize, y * cellSize);
+                window->draw(cell);
+            }
+            if (currentCell != nullptr && currentCell->isAlive() && currentCell->getCurrentState()->isObstacle()) {
+                cell.setFillColor(Color(75, 67, 135)); //vivantes obstacle
+                cell.setPosition(x * cellSize, y * cellSize);
+                window->draw(cell);
+            }
+            if (currentCell != nullptr && !currentCell->isAlive() && currentCell->getCurrentState()->isObstacle()) {
+                cell.setFillColor(Color(37, 37, 38)); // motres obstacle
                 cell.setPosition(x * cellSize, y * cellSize);
                 window->draw(cell);
             }
