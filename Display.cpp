@@ -1,11 +1,11 @@
-#include "Display.h"
+ï»¿#include "Display.h"
 
 void ConsoleDisplay::show(Grid* grid)
 {
-    // Implémentation à venir
+    // Implï¿½mentation ï¿½ venir
 }
 
 void ConsoleDisplay::clear()
 {
-    // Implémentation à venir
+    // Implï¿½mentation ï¿½ venir
 }

@@ -90,8 +90,6 @@ void Game::runGraphical(int maxIter)
 
         display->handleEvents();
 
-        display->handleEvents(grid);
-
         if (display->restartRequested) {
 
             int ruleIndex = display->getRequestedRuleIndex();
@@ -135,11 +133,6 @@ void Game::runGraphical(int maxIter)
             grid->computeNextGen();
             iterationsDone++;
             display->setIterationCounter(iterationsDone);
-            display->state = PAUSED;
-        }
-        else if (display->state == CLEARED)
-        {
-            grid = new Grid(gridWidth, gridHeight, conway,true);
             display->state = PAUSED;
         }
 

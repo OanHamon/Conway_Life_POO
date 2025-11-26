@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 #include "FileManager.h"
 
 bool FileManager::write(string _msg) {
@@ -54,7 +54,7 @@ vector<vector<int>> FileManager::getGrid() {
             return {};
         }
         if (rows <= 0 || cols <= 0) {
-            cerr << "Erreur: dimensions négatives ou nulles." << endl;
+            cerr << "Erreur: dimensions nï¿½gatives ou nulles." << endl;
             return {};
         }
 
@@ -63,7 +63,7 @@ vector<vector<int>> FileManager::getGrid() {
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < cols; j++) {
                 if (!(ss >> grid[i][j])) {
-                    cerr << "Erreur: données insuffisantes ou invalides à la position (" << i << "," << j << ")." << endl;
+                    cerr << "Erreur: donnï¿½es insuffisantes ou invalides ï¿½ la position (" << i << "," << j << ")." << endl;
                     return {};
                 }
             }
@@ -89,7 +89,7 @@ bool FileManager::saveGrid(const vector<vector<int>>& _grid) {
 
     for (const auto& r : _grid) {
         if ((int)r.size() != col) {
-            cerr << "Erreur: lignes de tailles différentes." << endl;
+            cerr << "Erreur: lignes de tailles diffï¿½rentes." << endl;
             return false;
         }
     }

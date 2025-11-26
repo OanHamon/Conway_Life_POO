@@ -33,4 +33,3 @@ public:
     bool isObstacle() const override { return Obstacle; }
 
 };
-
