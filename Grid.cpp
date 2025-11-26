@@ -124,3 +124,27 @@ void Grid::UpdateCells()
         }
     }
 }
+void Grid::placePattern(const Patern& pattern, int centerRow, int centerCol) {
+    // Calculer l'offset pour centrer le pattern
+    int offsetRow = centerRow - pattern.height / 2;
+    int offsetCol = centerCol - pattern.width / 2;
+
+    for (const auto& cell : pattern.cells) {
+        int targetRow = (offsetRow + cell.first + rows) % rows;
+        int targetCol = (offsetCol + cell.second + cols) % cols;
+
+        if (targetRow >= 0 && targetRow < rows &&
+            targetCol >= 0 && targetCol < cols) {
+
+            // Remplacer l'état de la cellule
+            delete cells[targetRow][targetCol]->getCurrentState();
+            cells[targetRow][targetCol]->setNextState(new AliveState());
+            cells[targetRow][targetCol]->updateState();
+        }
+    }
+}
+Cell* Grid::getCellFromPixel(int pixelX, int pixelY, int cellSize) {
+    int row = pixelX / cellSize;
+    int col = pixelY / cellSize;
+    return getCell(row, col);
+}

@@ -4,6 +4,7 @@
 #include "Cell.h"
 #include "Rule.h"
 #include <string>
+#include "Patern.h"
 
 using namespace std;
 
@@ -22,6 +23,10 @@ public:
     int countAliveNeighbors(Cell* cell);
     void computeNextGen();
     void UpdateCells();
+    void placePattern(const Patern& pattern, int centerRow, int centerCol);
+
+    Cell* getCellFromPixel(int pixelX, int pixelY, int cellSize);
+
 
 private:
     int rows;
