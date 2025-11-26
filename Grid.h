@@ -8,6 +8,11 @@
 
 using namespace std;
 
+class GridData {
+    int rows;
+    int cols;
+    vector<vector<bool>> initialStates;
+};
 
 class Grid
 {
@@ -20,6 +25,7 @@ public:
     int getRows() const;
     int getCols() const;
     Cell* getCell(int _row, int _col);
+
     void setRule(Rule* newRule);
     int countAliveNeighbors(Cell* cell);
     void computeNextGen();

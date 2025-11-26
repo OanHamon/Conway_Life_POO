@@ -53,10 +53,10 @@ Grid::Grid(int _rows, int _cols, Rule* _rule, vector<vector<int>> _data)
         cells[i].resize(cols);
         for (int j = 0; j < cols; j++) {
             if (_data[i][j] == 1) {
-                cells[i][j] = new Cell(i, j, new AliveState());
+                cells[i][j] = new Cell(i, j, new AliveState(false));
             }
             else {
-                cells[i][j] = new Cell(i, j, new DeadState());
+                cells[i][j] = new Cell(i, j, new DeadState(false));
             }
         }
     }
@@ -74,15 +74,8 @@ Grid::~Grid()
     delete rule;
 }
 
-int Grid::getRows() const
-{
-    return rows;
-}
-
-int Grid::getCols() const
-{
-    return cols;
-}
+int Grid::getRows() const { return rows; }
+int Grid::getCols() const { return cols; }
 
 Cell* Grid::getCell(int _row, int _col)
 {
@@ -131,9 +124,10 @@ void Grid::computeNextGen()
             }
 
             CellState* nxtState = rule->computeNextState(cell, this);
-            cell->setNextState(nxtState);
+            if (!cell->getCurrentState()->isObstacle()) {
+                cell->setNextState(nxtState);
+            }
         }
-    }
 
     UpdateCells();
 }

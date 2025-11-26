@@ -3,6 +3,7 @@
 #include <iostream>
 #include <limits>
 #include <ctime>
+#include <SFML/System.hpp>
 
 using namespace std;
 
@@ -15,7 +16,7 @@ void Game::run()
 
     if (mode == 0) {
         maxIter = askIterations();
-        //runConsole(maxIter);
+        runConsole(maxIter);
     }
     else {
         maxIter = 5000;
@@ -87,6 +88,7 @@ void Game::runGraphical(int maxIter)
     int currentRuleIndex = 0;
 
     while (display->isOpen()) {
+        display->handleEvents();
 
         display->handleEvents(grid);
 
@@ -155,7 +157,6 @@ void Game::runGraphical(int maxIter)
     delete grid;
 }
 
-void Game::runConsole(int _maxIter)
-{
-    cout << "ererere";
+void Game::runConsole(int maxIter) {
+    cout << "Mode console en cours de développement...\n";
 }

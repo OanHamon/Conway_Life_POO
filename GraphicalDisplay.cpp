@@ -9,7 +9,7 @@ GraphicalDisplay::GraphicalDisplay(int _windowWidth, int _windowHeight, int cell
     window->setFramerateLimit(60);
 
     if (!font.loadFromFile(R"(Fonts\NotoSans.ttf)")) {
-        // gestion d'erreur
+        cerr << "Erreur chargement police" << endl;
     }
 
 #pragma region Bouton de Gestion
@@ -126,6 +126,8 @@ GraphicalDisplay::~GraphicalDisplay()
         delete label;
     }
     delete window;
+    for (auto b : buttons) delete b;
+    for (auto l : labels) delete l;
 }
 
 void GraphicalDisplay::setIterationCounter(int value)
@@ -184,7 +186,7 @@ void GraphicalDisplay::show(Grid* grid)
 void GraphicalDisplay::setDelay(int milliseconds)
 {
     delay = milliseconds;
-}
+    }
 
 void GraphicalDisplay::clear()
 {
