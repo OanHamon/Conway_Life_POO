@@ -18,7 +18,7 @@
     <ClCompile Include="Conway_Life_POO.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="File_manager.cpp">
+    <ClCompile Include="FileManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Cell.cpp">
@@ -41,7 +41,7 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="File_manager.h">
+    <ClInclude Include="FileManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="CellState.h">
