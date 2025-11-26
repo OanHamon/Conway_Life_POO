@@ -131,7 +131,7 @@ void Game::runGraphical(int maxIter)
             break;
         }
 
-        sf::sleep(sf::milliseconds(display->getDelay()));
+        sleep(milliseconds(display->getDelay()));
     }
 
     delete display;
@@ -159,6 +159,9 @@ void Game::runConsole()
     Grid* grid = new Grid(gridInt_in.size(), gridInt_in[0].size(), conway, gridInt_in);
 
     while (n_iter<_maxIter) {
+        display->clear();
+        display->show(grid);
+
         path_out = path_in.substr(0, path_in.length() - 4) +  "_out/generation" + to_string(n_iter + 1) + ".txt";
         f_out = new FileManager(path_out);
 
@@ -169,5 +172,6 @@ void Game::runConsole()
         f_out->saveGrid(gridInt_out);
 
         n_iter++;
+        sleep(milliseconds(500));
     }
 }
