@@ -4,13 +4,13 @@
 
 using namespace std;
 
-struct Pattern {
+struct Patern {
     string name;
     vector<pair<int, int>> cells;  // Coordonnées relatives (dx, dy)
     int width;
     int height;
 
-    Pattern(const string& n) : name(n), width(0), height(0) {}
+    Patern(const string& n) : name(n), width(0), height(0) {}
 
     void addCell(int dx, int dy) {
         cells.push_back({ dx, dy });
@@ -20,15 +20,15 @@ struct Pattern {
     }
 };
 
-class PatternLibrary {
+class PaternLibrary {
 public:
-    static Pattern getPoint() {
-        Pattern p("Glider");
+    static Patern getPoint() {
+        Patern p("Glider");
         p.addCell(0, 0);
         return p;
     }
-    static Pattern getGlider() {
-        Pattern p("Glider");
+    static Patern getGlider() {
+        Patern p("Glider");
         p.addCell(1, 0);
         p.addCell(2, 1);
         p.addCell(0, 2);
@@ -37,16 +37,16 @@ public:
         return p;
     }
 
-    static Pattern getBlinker() {
-        Pattern p("Blinker");
+    static Patern getBlinker() {
+        Patern p("Blinker");
         p.addCell(0, 1);
         p.addCell(1, 1);
         p.addCell(2, 1);
         return p;
     }
 
-    static Pattern getToad() {
-        Pattern p("Toad");
+    static Patern getToad() {
+        Patern p("Toad");
         p.addCell(1, 0);
         p.addCell(2, 0);
         p.addCell(3, 0);
@@ -56,8 +56,8 @@ public:
         return p;
     }
 
-    static Pattern getBeacon() {
-        Pattern p("Beacon");
+    static Patern getBeacon() {
+        Patern p("Beacon");
         p.addCell(0, 0);
         p.addCell(1, 0);
         p.addCell(0, 1);
@@ -67,8 +67,8 @@ public:
         return p;
     }
 
-    static Pattern getPulsar() {
-        Pattern p("Pulsar");
+    static Patern getPulsar() {
+        Patern p("Pulsar");
         // Quart supérieur gauche
         for (int i = 2; i <= 4; i++) {
             p.addCell(i, 0);
@@ -106,8 +106,8 @@ public:
         return p;
     }
 
-    static Pattern getLWSS() {
-        Pattern p("LWSS");
+    static Patern getLWSS() {
+        Patern p("LWSS");
         p.addCell(1, 0);
         p.addCell(4, 0);
         p.addCell(0, 1);
@@ -120,7 +120,7 @@ public:
         return p;
     }
 
-    static vector<Pattern> getAllPatterns() {
+    static vector<Patern> getAllPatterns() {
         return {
             getGlider(),
             getBlinker(),
