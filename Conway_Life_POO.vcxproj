@@ -129,10 +129,12 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Cell.cpp" />
     <ClCompile Include="Conway_Life_POO.cpp" />
     <ClCompile Include="File_manager.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Cell.h" />
     <ClInclude Include="CellState.h" />
     <ClInclude Include="File_manager.h" />
     <ClInclude Include="GameData.h" />

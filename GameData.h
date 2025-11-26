@@ -2,7 +2,7 @@
 #include <vector>
 #include <cstdlib>
 #include <omp.h>
-#include "CellState.h"
+#include "Cell.h"
 using namespace std;
 
 
@@ -13,41 +13,6 @@ class Rule;
 
 
 
-class Cell
-{
-public:
-    Cell(int _row, int _col, CellState* _state)
-        : row(_row), col(_col), currentState(_state), nextState(nullptr) {
-    }
-
-    int getRow() const { return row; }
-    int getCol() const { return col; }
-    CellState* getCurrentState() const { return currentState; }
-    bool isAlive() const { return currentState->isAlive(); }
-
-    void setNextState(CellState* _state)
-    {
-        if (nextState != nullptr) {
-            delete nextState;
-        }
-        nextState = _state;
-    }
-
-    void updateState()
-    {
-        if (nextState != nullptr) {
-            delete currentState;
-            currentState = nextState;
-            nextState = nullptr;
-        }
-    }
-
-private:
-    int row;
-    int col;
-    CellState* currentState;
-    CellState* nextState;
-};
 
 
 class Rule
@@ -306,6 +271,35 @@ public:
         else {
             // Cellule morte : naît avec exactement 3 voisins
             if (aliveNeighbors == 1 || aliveNeighbors == 2 || aliveNeighbors == 3|| aliveNeighbors == 4|| aliveNeighbors == 5|| aliveNeighbors == 6) {
+                return new AliveState();
+            }
+            else {
+                return new DeadState();
+            }
+        }
+    }
+
+};  
+class DayAndNight : public Rule
+{
+public:
+    CellState* computeNextState(Cell* cell, Grid* grid)
+    {
+        bool isCurrentlyAlive = cell->isAlive();
+        int aliveNeighbors = grid->countAliveNeighbors(cell);
+
+        if (isCurrentlyAlive) {
+            // Cellule vivante : survit avec 2 ou 3 voisins
+            if (aliveNeighbors == 3 || aliveNeighbors == 4 || aliveNeighbors == 6 || aliveNeighbors == 7 || aliveNeighbors == 8 ) {
+                return new AliveState();
+            }
+            else {
+                return new DeadState();
+            }
+        }
+        else {
+            // Cellule morte : naît avec exactement 3 voisins
+            if (aliveNeighbors == 3 || aliveNeighbors == 6 || aliveNeighbors ==7|| aliveNeighbors == 8) {
                 return new AliveState();
             }
             else {

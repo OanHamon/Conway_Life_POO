@@ -398,7 +398,7 @@ Choisissez le mode :
                     cout << "Règle : Hardcore\n";
                     break;
                 case 2:
-                    newRule = new HighLifeRule();
+                    newRule = new DayAndNight();
                     cout << "Règle : Low Social Life\n";
                     break;
                 default:
