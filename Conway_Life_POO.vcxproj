@@ -133,6 +133,7 @@
     <ClCompile Include="File_manager.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="CellState.h" />
     <ClInclude Include="File_manager.h" />
     <ClInclude Include="GameData.h" />
     <ClInclude Include="GameLoop.h" />
