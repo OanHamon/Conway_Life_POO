@@ -131,14 +131,22 @@
   <ItemGroup>
     <ClCompile Include="Cell.cpp" />
     <ClCompile Include="Conway_Life_POO.cpp" />
+    <ClCompile Include="Display.cpp" />
     <ClCompile Include="File_manager.cpp" />
+    <ClCompile Include="Game.cpp" />
+    <ClCompile Include="GraphicalDisplay.cpp" />
+    <ClCompile Include="Grid.cpp" />
+    <ClCompile Include="Rule.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Cell.h" />
     <ClInclude Include="CellState.h" />
+    <ClInclude Include="Display.h" />
     <ClInclude Include="File_manager.h" />
-    <ClInclude Include="GameData.h" />
-    <ClInclude Include="GameLoop.h" />
+    <ClInclude Include="Game.h" />
+    <ClInclude Include="GraphicalDisplay.h" />
+    <ClInclude Include="Grid.h" />
+    <ClInclude Include="Rule.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
