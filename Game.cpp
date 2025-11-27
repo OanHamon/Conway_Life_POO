@@ -90,15 +90,15 @@ void Game::runGraphical(int maxIter)
             switch (currentRuleIndex) {
             case 0:
                 newRule = new ConwayRule();
-                cout << "Règle : Conway's Game of Life\n";
+                cout << "Regle : Conway's Game of Life\n";
                 break;
             case 1:
-                newRule = new HighLifeRule();
-                cout << "Règle : High Life\n";
+                newRule = new DayAndNightRule();
+                cout << "Regle : High Life\n";
                 break;
             case 2:
-                newRule = new DayAndNight();
-                cout << "Règle : Day and Night\n";
+                newRule = new CoagulationsRule();
+                cout << "Regle : Day and Night\n";
                 break;
             default:
                 newRule = new ConwayRule();

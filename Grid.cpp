@@ -179,7 +179,8 @@ void Grid::placePattern(const Patern& pattern, int centerRow, int centerCol) {
 
             // Remplacer l'état de la cellule
             
-            cells[targetRow][targetCol]->setNextState(new AliveState());
+            if(pattern.isObstacle){ cells[targetRow][targetCol]->setNextState(new AliveState(true)); } else { cells[targetRow][targetCol]->setNextState(new AliveState()); }
+
             cells[targetRow][targetCol]->updateState();
         }
     }

@@ -30,6 +30,14 @@ public:
         p.addCell(0, 0);
         return p;
     }
+
+    static Patern getAliveObstacle() {
+        Patern p("Point");
+        p.addCell(0, 0);
+        p.isObstacle = true;
+        return p;
+    }
+
     static Patern getGlider() {
         Patern p("Glider");
         p.addCell(1, 0);
@@ -126,6 +134,7 @@ public:
     static vector<Patern> getAllPatterns() {
         return {
             getPoint(),
+            getAliveObstacle(),
             getGlider(),
             getBlinker(),
             getToad(),
