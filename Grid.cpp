@@ -75,7 +75,6 @@ Grid::~Grid()
             delete cells[i][j];
         }
     }
-    delete rule;
 }
 
 int Grid::getRows() const
@@ -165,6 +164,7 @@ vector<vector<int>> Grid::getGridInt()
     }
     return grid;
 }
+
 void Grid::placePattern(const Patern& pattern, int centerRow, int centerCol) {
     // Calculer l'offset pour centrer le pattern
     int offsetRow = centerRow - pattern.height / 2;
@@ -185,6 +185,7 @@ void Grid::placePattern(const Patern& pattern, int centerRow, int centerCol) {
         }
     }
 }
+
 Cell* Grid::getCellFromPixel(int pixelX, int pixelY, int cellSize) {
     int row = pixelX / cellSize;
     int col = pixelY / cellSize;
