@@ -20,7 +20,7 @@ void Game::run()
         runConsole();
     }
     else {
-        maxIter = 100000;
+        int maxIter = 100000;
         runGraphical(maxIter);
     }
 }
