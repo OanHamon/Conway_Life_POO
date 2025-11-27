@@ -14,40 +14,42 @@ GraphicalDisplay::GraphicalDisplay(int _windowWidth, int _windowHeight, int cell
         // gestion d'erreur
     }
 
-#pragma region Bouton de Gestion
-    int buttonHeight = 60;
-    int buttonWidth = 180;
-    int spacing = 20;
-    vector<string> names = { "Pause", "Next", "Restart", "Rule1", "Rule2", "Rule3" };
+    #pragma region Bouton
 
-    for (int i = 0; i < 6; i++) {
-        sf::RectangleShape* button = new sf::RectangleShape();
-        button->setSize(sf::Vector2f(buttonWidth, buttonHeight));
-        button->setFillColor(sf::Color(100, 100, 200));
+        #pragma region Bouton de Gestion
+            int buttonHeight = 60;
+            int buttonWidth = 180;
+            int spacing = 20;
+            vector<string> names = { "Pause", "Next", "Restart", "Rule1", "Rule2", "Rule3" };
 
-        int row = i / 3;
-        int col = i % 3;
-        float x = spacing + col * (buttonWidth + spacing);
-        float y = windowHeight + 20.f + row * (buttonHeight + spacing);
+            for (int i = 0; i < 6; i++) {
+                sf::RectangleShape* button = new sf::RectangleShape();
+                button->setSize(sf::Vector2f(buttonWidth, buttonHeight));
+                button->setFillColor(sf::Color(100, 100, 200));
 
-        button->setPosition(x, y);
-        buttons.push_back(button);
+                int row = i / 3;
+                int col = i % 3;
+                float x = spacing + col * (buttonWidth + spacing);
+                float y = windowHeight + 20.f + row * (buttonHeight + spacing);
 
-        sf::Text* label = new sf::Text();
-        label->setFont(font);
-        label->setString(names[i]);
-        label->setCharacterSize(20);
-        label->setFillColor(sf::Color::White);
+                button->setPosition(x, y);
+                buttons.push_back(button);
 
-        sf::FloatRect textBounds = label->getLocalBounds();
-        label->setOrigin(textBounds.left + textBounds.width / 2.0f,
-            textBounds.top + textBounds.height / 2.0f);
-        label->setPosition(x + buttonWidth / 2.0f, y + buttonHeight / 2.0f);
-        labels.push_back(label);
-    }
-#pragma endregion
+                sf::Text* label = new sf::Text();
+                label->setFont(font);
+                label->setString(names[i]);
+                label->setCharacterSize(20);
+                label->setFillColor(sf::Color::White);
 
-#pragma region Bouton de Vitesse
+                sf::FloatRect textBounds = label->getLocalBounds();
+                label->setOrigin(textBounds.left + textBounds.width / 2.0f,
+                    textBounds.top + textBounds.height / 2.0f);
+                label->setPosition(x + buttonWidth / 2.0f, y + buttonHeight / 2.0f);
+                labels.push_back(label);
+            }
+        #pragma endregion
+
+        #pragma region Bouton de Vitesse
     int speedButtonHeight = 40;
     int speedButtonWidth = 120;
     vector<string> speeds = { "1", "20", "50", "100" };
@@ -79,10 +81,10 @@ GraphicalDisplay::GraphicalDisplay(int _windowWidth, int _windowHeight, int cell
     }
 #pragma endregion
 
-#pragma region Bouton de Paternes
+        #pragma region Bouton de Paternes
     int patButtonHeight = 100;
     int patButtonWidth = 100;
-    vector<string> paterne = { "Paterne 1", "Paterne 2","Paterne 3","Paterne 4","Paterne 5","Paterne 6","Paterne 1", "Paterne 2","Paterne 3","Paterne 4","Paterne 5","Paterne 6" };
+    vector<string> paterne = { "Paterne 1", "Paterne 2","Paterne 3","Paterne 4","Paterne 5","Paterne 6","Paterne 7", "Paterne 8","Paterne 9","Paterne 10","Paterne 11","Paterne 12" };
 
     for (int i = 0; i < 12; i++) {
         sf::RectangleShape* button = new sf::RectangleShape();
@@ -113,11 +115,18 @@ GraphicalDisplay::GraphicalDisplay(int _windowWidth, int _windowHeight, int cell
     }
 #pragma endregion
 
+#pragma endregion
+
+#pragma region Iteration
+
     iterationText.setFont(font);
     iterationText.setCharacterSize(22);
     iterationText.setFillColor(sf::Color::White);
     iterationText.setString("Iterations : 0");
     iterationText.setPosition(20 + (3 * (buttonWidth + 20)), windowHeight + 20);
+
+#pragma endregion
+
 }
 
 GraphicalDisplay::~GraphicalDisplay()
@@ -196,17 +205,15 @@ void GraphicalDisplay::handleEvents(Grid* grid) {
 
                 // Vérifier si on clique dans la grille
                 if (patternMode && mousePos.x < windowWidth && mousePos.y < windowHeight) {
-                    // Placer le pattern
                     int gridX = mousePos.x / cellSize;
                     int gridY = mousePos.y / cellSize;
                     
                     if (selectedPatternIndex >= 0 && selectedPatternIndex < paterns.size()) {
                         grid->placePattern(paterns[selectedPatternIndex], gridX, gridY);
                         cout << "Pattern '" << paterns[selectedPatternIndex].name 
-                             << "' placé à (" << gridX << ", " << gridY << ")\n";
+                             << "' place a (" << gridX << ", " << gridY << ")\n";
                     }
                     
-                    // Désactiver le mode pattern après placement
                     patternMode = false;
                     selectedPatternIndex = -1;
                     continue;
@@ -313,7 +320,7 @@ void GraphicalDisplay::handleButtonClick(int buttonIndex) {
         if (patternIndex >= 0 && patternIndex < paterns.size()) {
             patternMode = true;
             selectedPatternIndex = patternIndex;
-            cout << "Pattern sélectionné : " << paterns[patternIndex].name << "\n";
+            cout << "Pattern selectionne : " << paterns[patternIndex].name << "\n";
         }
     }
 }

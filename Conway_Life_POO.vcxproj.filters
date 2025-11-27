@@ -68,5 +68,8 @@
     <ClInclude Include="ConsoleDisplay.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Patern.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

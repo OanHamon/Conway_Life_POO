@@ -4,6 +4,7 @@
 class Cell
 {
 public:
+
     Cell(int _row, int _col, CellState* _state)
         : row(_row), col(_col), currentState(_state), nextState(nullptr) {
     }

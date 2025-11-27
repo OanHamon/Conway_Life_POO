@@ -16,25 +16,55 @@ public:
     CellState* computeNextState(Cell* cell, Grid* grid) override;
 };
 
-class HardcoreRule : public Rule
-{
-public:
-    CellState* computeNextState(Cell* cell, Grid* grid) override;
-};
-
-class LowSocialLifeRule : public Rule
-{
-public:
-    CellState* computeNextState(Cell* cell, Grid* grid) override;
-};
-
 class HighLifeRule : public Rule
 {
 public:
     CellState* computeNextState(Cell* cell, Grid* grid) override;
 };
 
-class DayAndNight : public Rule
+class SeedsRule : public Rule
+{
+public:
+    CellState* computeNextState(Cell* cell, Grid* grid) override;
+};
+
+class DayAndNightRule : public Rule
+{
+public:
+    CellState* computeNextState(Cell* cell, Grid* grid) override;
+};
+
+class TectonicRule : public Rule
+{
+public:
+    CellState* computeNextState(Cell* cell, Grid* grid) override;
+};
+
+class ChromaticLifeRule : public Rule
+{
+public:
+    CellState* computeNextState(Cell* cell, Grid* grid) override;
+};
+
+class BloomLifeRule : public Rule
+{
+public:
+    CellState* computeNextState(Cell* cell, Grid* grid) override;
+};
+
+class MazeRule : public Rule
+{
+public:
+    CellState* computeNextState(Cell* cell, Grid* grid) override;
+};
+
+class CoagulationsRule : public Rule
+{
+public:
+    CellState* computeNextState(Cell* cell, Grid* grid) override;
+};
+
+class CoralRule : public Rule
 {
 public:
     CellState* computeNextState(Cell* cell, Grid* grid) override;
