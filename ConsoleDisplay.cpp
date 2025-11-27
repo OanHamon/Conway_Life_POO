@@ -15,7 +15,7 @@ void ConsoleDisplay::show(Grid* _grid) {
             }
             else
             {
-                cout << "0 ";
+                cout << ". ";
             }
         }
         cout << "\n";
