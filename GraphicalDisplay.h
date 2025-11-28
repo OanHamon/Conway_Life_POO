@@ -8,6 +8,14 @@ using namespace std;
 using namespace sf;
 
 enum GameState { RUNNING, PAUSED, STEP, CLEARED };
+enum windowType
+{
+    FOCUSED,
+    MANAGEMENT,
+    PATERN,
+    SPEED,
+    FULL
+};
 
 class GraphicalDisplay : public Display {
 public:
@@ -18,7 +26,7 @@ public:
 
 
 
-    GraphicalDisplay(int _windowWidth, int _windowHeight, int cellSize);
+    GraphicalDisplay(int _windowWidth, int _windowHeight, int cellSize, windowType type);
     ~GraphicalDisplay();
 
     void setIterationCounter(int value);

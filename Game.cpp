@@ -27,7 +27,7 @@ void Game::run()
 
 int Game::MainMenu()
 {
-    cout << R"(
+    std::cout << R"(
 +==================================================+
                   GAME OF LIFE
 +==================================================+
@@ -39,7 +39,7 @@ Choisissez le mode :
 
     int mode = -1;
     while (!(cin >> mode) || (mode != 0 && mode != 1)) {
-        cout << "Erreur. Entrer 0 (console) ou 1 (graphique): ";
+        std::cout << "Erreur. Entrer 0 (console) ou 1 (graphique): ";
         cin.clear();
         cin.ignore(numeric_limits<streamsize>::max(), '\n');
     }
@@ -58,18 +58,61 @@ void Game::runGraphical(int maxIter)
 {
     srand(time(0));
 
-    const int cellSize = 10;
-    const int gridWidth = 80;
-    const int gridHeight = 80;
+    const int cellSize = 8;
+    const int gridWidth = 100;
+    const int gridHeight = 100;
 
+
+
+    int answer;
+    std::cout << "Voulez Entrez une grille ou aléatoire ?" << endl << "Réponse (0-1) : ";
+    cin >> answer;
+
+
+    Grid* grid;
     Rule* conway = new ConwayRule();
-    Grid* grid = new Grid(gridWidth, gridHeight, conway);
+    GraphicalDisplay* display;
 
-    GraphicalDisplay* display = new GraphicalDisplay(
-        gridWidth * cellSize,
-        gridHeight * cellSize,
-        cellSize
-    );
+    if(answer == 1)
+    {
+        grid = new Grid(gridWidth, gridHeight, conway);
+
+        display = new GraphicalDisplay(
+            gridWidth * cellSize,
+            gridHeight * cellSize,
+            cellSize, FULL
+        );
+    
+    }
+    else 
+    {
+        ConsoleDisplay tempDisplay; 
+        string path_in = tempDisplay.askPath();
+
+        FileManager f_in(path_in);
+
+        vector<vector<int>> gridInt_in = f_in.getGrid();
+
+        display = new GraphicalDisplay(
+            gridInt_in[0].size() * cellSize,
+            gridInt_in.size() * cellSize,
+            cellSize, FOCUSED
+        );
+
+        string path_out = path_in.substr(0, path_in.length() - 4) + "_out/generation0.txt";
+
+        FileManager* f_out = new FileManager(path_out);
+        f_out->saveGrid(gridInt_in);
+
+
+         grid = new Grid(gridInt_in.size(), gridInt_in[0].size(), conway, gridInt_in);
+    
+    }
+
+
+
+
+
 
     int iterationsDone = 0;
     int currentRuleIndex = 0;
@@ -90,15 +133,15 @@ void Game::runGraphical(int maxIter)
             switch (currentRuleIndex) {
             case 0:
                 newRule = new ConwayRule();
-                cout << "Regle : Conway's Game of Life\n";
+                std::cout << "Regle : Conway's Game of Life\n";
                 break;
             case 1:
                 newRule = new DayAndNightRule();
-                cout << "Regle : High Life\n";
+                std::cout << "Regle : High Life\n";
                 break;
             case 2:
                 newRule = new CoagulationsRule();
-                cout << "Regle : Day and Night\n";
+                std::cout << "Regle : Day and Night\n";
                 break;
             default:
                 newRule = new ConwayRule();
@@ -134,7 +177,7 @@ void Game::runGraphical(int maxIter)
         display->show(grid);
 
         if (iterationsDone >= maxIter) {
-            cout << "Limite d'iterations atteinte (" << maxIter << ").\n";
+            std::cout << "Limite d'iterations atteinte (" << maxIter << ").\n";
             break;
         }
 

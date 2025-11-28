@@ -8,5 +8,5 @@ public:
 	void show(Grid* grid) override;
 	void clear() override;
 	int askIterations();
-	string askPath();
+
 };
