@@ -140,9 +140,9 @@ void Grid::computeNextGen()
     /*
     #pragma omp parallel for collapse(2):
     Cette directive indique au compilateur de paralléliser la boucle
-    qui suit via l'API OpenMP. Chaque itération (ou groupe d’itérations) sera exécutée 
-    par un thread différent, ce qui accélère le traitement sur des 
-    machines multi-coeurs.
+    qui suit via l'API OpenMP. Chaque itération (ou groupe d’itérations)
+    sera exécutée par un thread différent, ce qui accélère le traitement 
+    sur des machines multi-coeurs.
     */
     for (int i = 0; i < rows; i++) {
         for (int j = 0; j < cols; j++) {
