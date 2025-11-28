@@ -213,7 +213,7 @@ void Game::runConsole()
 
     vector<vector<int>> gridInt_in = f_in.getGrid();
 
-    string path_out = path_in.substr(0, path_in.length() - 4) + "_out/generation0.txt";
+    string path_out = path_in.substr(0, path_in.length() - 4) + "_out/generationInitiale.txt";
     FileManager* f_out = new FileManager(path_out);
     f_out->saveGrid(gridInt_in);
 
