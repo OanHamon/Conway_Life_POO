@@ -17,7 +17,7 @@ namespace GridGameCalculationTest
     TEST_CLASS(GridGameCalculationTest)
     {
     public:
-        TEST_METHOD(TestGrilleAttendue)
+        TEST_METHOD(TestGrilleVide)
         {
             // paramètres
             vector<vector<int>> inGridInt = {
@@ -28,6 +28,76 @@ namespace GridGameCalculationTest
             vector<vector<int>> attendueGridInt = {
                 {0, 0},
                 {0, 0}
+            };
+
+            int nIter = 5;
+            ConwayRule rule;
+
+
+
+            // test
+            Grid grid(inGridInt.size(), inGridInt[0].size(), &rule, inGridInt);
+
+            for (int i = 0; i < nIter; i++)
+            {
+                grid.computeNextGen();
+            }
+
+            vector<vector<int>> outGridInt = grid.getGridInt();
+            Assert::IsTrue(outGridInt == attendueGridInt, L"La grille finale ne correspond pas à la grille attendue.");
+        }
+
+        TEST_METHOD(TestGrilleCarre)
+        {
+            // paramètres
+            vector<vector<int>> inGridInt = {
+                {0, 0, 0, 0},
+                {0 ,1, 1, 0},
+                {0 ,1, 1, 0},
+                {0, 0, 0, 0}
+            };
+
+            vector<vector<int>> attendueGridInt = {
+                {0, 0, 0, 0},
+                {0 ,1, 1, 0},
+                {0 ,1, 1, 0},
+                {0, 0, 0, 0}
+            };
+
+            int nIter = 5;
+            ConwayRule rule;
+
+
+
+            // test
+            Grid grid(inGridInt.size(), inGridInt[0].size(), &rule, inGridInt);
+
+            for (int i = 0; i < nIter; i++)
+            {
+                grid.computeNextGen();
+            }
+
+            vector<vector<int>> outGridInt = grid.getGridInt();
+            Assert::IsTrue(outGridInt == attendueGridInt, L"La grille finale ne correspond pas à la grille attendue.");
+        }
+
+        TEST_METHOD(TestGrilleBlinker)
+        {
+            // paramètres
+            vector<vector<int>> inGridInt = {
+                {0, 0, 0, 0, 0},
+                {0, 0, 0, 0, 0},
+                {0, 1, 1, 1, 0},
+                {0, 0, 0, 0, 0},
+                {0, 0, 0, 0, 0}
+            };
+
+            vector<vector<int>> attendueGridInt = {
+                {0, 0, 0, 0, 0},
+                {0, 0, 1, 0, 0},
+                {0, 0, 1, 0, 0},
+                {0, 0, 1, 0, 0},
+                {0, 0, 0, 0, 0}
             };
 
             int nIter = 5;
