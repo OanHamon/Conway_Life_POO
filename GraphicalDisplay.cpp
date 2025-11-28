@@ -1,7 +1,9 @@
 #include "GraphicalDisplay.h"
 #include <iostream>
 
-GraphicalDisplay::GraphicalDisplay(int _windowWidth, int _windowHeight, int cellSize)
+
+
+GraphicalDisplay::GraphicalDisplay(int _windowWidth, int _windowHeight, int cellSize, windowType type)
     : cellSize(cellSize), delay(100), windowWidth(_windowWidth), windowHeight(_windowHeight),
     iterationCounter(0), requestedRuleIndex(-1)
 {
@@ -14,110 +16,128 @@ GraphicalDisplay::GraphicalDisplay(int _windowWidth, int _windowHeight, int cell
         // gestion d'erreur
     }
 
+    #pragma region GUI
+
+    int buttonHeight = 60;
+    int buttonWidth = 180;
+    int spacing = 20;
+
     #pragma region Bouton
 
-        #pragma region Bouton de Gestion
-            int buttonHeight = 60;
-            int buttonWidth = 180;
-            int spacing = 20;
-            vector<string> names = { "Pause", "Next", "Restart", "Rule1", "Rule2", "Rule3" };
+#pragma region Bouton de Gestion
+    if(type == MANAGEMENT || type == FULL)
+    {
+        int buttonHeight = 60;
+        int buttonWidth = 180;
 
-            for (int i = 0; i < 6; i++) {
-                sf::RectangleShape* button = new sf::RectangleShape();
-                button->setSize(sf::Vector2f(buttonWidth, buttonHeight));
-                button->setFillColor(sf::Color(100, 100, 200));
+        vector<string> names = { "Pause", "Next", "Restart", "Rule1", "Rule2", "Rule3" };
 
-                int row = i / 3;
-                int col = i % 3;
-                float x = spacing + col * (buttonWidth + spacing);
-                float y = windowHeight + 20.f + row * (buttonHeight + spacing);
+        for (int i = 0; i < 6; i++) {
+            sf::RectangleShape* button = new sf::RectangleShape();
+            button->setSize(sf::Vector2f(buttonWidth, buttonHeight));
+            button->setFillColor(sf::Color(100, 100, 200));
 
-                button->setPosition(x, y);
-                buttons.push_back(button);
+            int row = i / 3;
+            int col = i % 3;
+            float x = spacing + col * (buttonWidth + spacing);
+            float y = windowHeight + 20.f + row * (buttonHeight + spacing);
 
-                sf::Text* label = new sf::Text();
-                label->setFont(font);
-                label->setString(names[i]);
-                label->setCharacterSize(20);
-                label->setFillColor(sf::Color::White);
+            button->setPosition(x, y);
+            buttons.push_back(button);
 
-                sf::FloatRect textBounds = label->getLocalBounds();
-                label->setOrigin(textBounds.left + textBounds.width / 2.0f,
-                    textBounds.top + textBounds.height / 2.0f);
-                label->setPosition(x + buttonWidth / 2.0f, y + buttonHeight / 2.0f);
-                labels.push_back(label);
-            }
-        #pragma endregion
+            sf::Text* label = new sf::Text();
+            label->setFont(font);
+            label->setString(names[i]);
+            label->setCharacterSize(20);
+            label->setFillColor(sf::Color::White);
 
-        #pragma region Bouton de Vitesse
-    int speedButtonHeight = 40;
-    int speedButtonWidth = 120;
-    vector<string> speeds = { "1", "20", "50", "100" };
-
-    for (int i = 0; i < 4; i++) {
-        sf::RectangleShape* button = new sf::RectangleShape();
-        button->setSize(sf::Vector2f(speedButtonWidth, speedButtonHeight));
-        button->setFillColor(sf::Color(100, 100, 200));
-
-        int row = i / 2;
-        int col = i % 2;
-        float x = 20 + (3 * (buttonWidth + 20)) + col * (speedButtonWidth + spacing);
-        float y = 50 + windowHeight + 20.f + row * (speedButtonHeight + spacing);
-
-        button->setPosition(x, y);
-        buttons.push_back(button);
-
-        sf::Text* label = new sf::Text();
-        label->setFont(font);
-        label->setString(speeds[i]);
-        label->setCharacterSize(20);
-        label->setFillColor(sf::Color::White);
-
-        sf::FloatRect textBounds = label->getLocalBounds();
-        label->setOrigin(textBounds.left + textBounds.width / 2.0f,
-            textBounds.top + textBounds.height / 2.0f);
-        label->setPosition(x + speedButtonWidth / 2.0f, y + speedButtonHeight / 2.0f);
-        labels.push_back(label);
+            sf::FloatRect textBounds = label->getLocalBounds();
+            label->setOrigin(textBounds.left + textBounds.width / 2.0f,
+                textBounds.top + textBounds.height / 2.0f);
+            label->setPosition(x + buttonWidth / 2.0f, y + buttonHeight / 2.0f);
+            labels.push_back(label);
+        }
     }
+
 #pragma endregion
 
-        #pragma region Bouton de Paternes
-    int patButtonHeight = 100;
-    int patButtonWidth = 100;
-    vector<string> paterne = { "Paterne 1", "Paterne 2","Paterne 3","Paterne 4","Paterne 5","Paterne 6","Paterne 7", "Paterne 8","Paterne 9","Paterne 10","Paterne 11","Paterne 12" };
+#pragma region Bouton de Vitesse
+    if(type == SPEED || type == FULL)
+    {
+        int speedButtonHeight = 40;
+        int speedButtonWidth = 120;
+        vector<string> speeds = { "1", "20", "50", "100" };
 
-    for (int i = 0; i < 12; i++) {
-        sf::RectangleShape* button = new sf::RectangleShape();
-        button->setSize(sf::Vector2f(patButtonWidth, patButtonHeight));
-        button->setFillColor(sf::Color(100, 100, 200));
+        for (int i = 0; i < 4; i++) {
+            sf::RectangleShape* button = new sf::RectangleShape();
+            button->setSize(sf::Vector2f(speedButtonWidth, speedButtonHeight));
+            button->setFillColor(sf::Color(100, 100, 200));
 
-        int row = i % 6;
-        int col = i / 6;
-        float x = windowWidth + 40 + col * (patButtonWidth + spacing);
-        float y = 50 + row * (patButtonHeight + spacing);
+            int row = i / 2;
+            int col = i % 2;
+            float x = 20 + (3 * (buttonWidth + 20)) + col * (speedButtonWidth + spacing);
+            float y = 50 + windowHeight + 20.f + row * (speedButtonHeight + spacing);
 
+            button->setPosition(x, y);
+            buttons.push_back(button);
 
-        button->setPosition(x, y);
-        buttons.push_back(button);
+            sf::Text* label = new sf::Text();
+            label->setFont(font);
+            label->setString(speeds[i]);
+            label->setCharacterSize(20);
+            label->setFillColor(sf::Color::White);
 
-        sf::Text* label = new sf::Text();
-        label->setFont(font);
-       /* label->setString(paterns[i].name);*/
-        label->setString(paterne[i]);
-        label->setCharacterSize(20);
-        label->setFillColor(sf::Color::White);
-
-        sf::FloatRect textBounds = label->getLocalBounds();
-        label->setOrigin(textBounds.left + textBounds.width / 2.0f,
-            textBounds.top + textBounds.height / 2.0f);
-        label->setPosition(x + patButtonWidth / 2.0f, y + patButtonHeight / 2.0f);
-        labels.push_back(label);
+            sf::FloatRect textBounds = label->getLocalBounds();
+            label->setOrigin(textBounds.left + textBounds.width / 2.0f,
+                textBounds.top + textBounds.height / 2.0f);
+            label->setPosition(x + speedButtonWidth / 2.0f, y + speedButtonHeight / 2.0f);
+            labels.push_back(label);
+        }
     }
+   
+#pragma endregion
+
+#pragma region Bouton de Paternes
+    if(type == PATERN || type == FULL)
+    {
+        int patButtonHeight = 100;
+        int patButtonWidth = 100;
+        vector<string> paterne = { "Paterne 1", "Paterne 2","Paterne 3","Paterne 4","Paterne 5","Paterne 6","Paterne 7", "Paterne 8","Paterne 9","Paterne 10","Paterne 11","Paterne 12" };
+
+        for (int i = 0; i < 12; i++) {
+            sf::RectangleShape* button = new sf::RectangleShape();
+            button->setSize(sf::Vector2f(patButtonWidth, patButtonHeight));
+            button->setFillColor(sf::Color(100, 100, 200));
+
+            int row = i % 6;
+            int col = i / 6;
+            float x = windowWidth + 40 + col * (patButtonWidth + spacing);
+            float y = 50 + row * (patButtonHeight + spacing);
+
+
+            button->setPosition(x, y);
+            buttons.push_back(button);
+
+            sf::Text* label = new sf::Text();
+            label->setFont(font);
+            /* label->setString(paterns[i].name);*/
+            label->setString(paterns[i].name);
+            label->setCharacterSize(20);
+            label->setFillColor(sf::Color::White);
+
+            sf::FloatRect textBounds = label->getLocalBounds();
+            label->setOrigin(textBounds.left + textBounds.width / 2.0f,
+                textBounds.top + textBounds.height / 2.0f);
+            label->setPosition(x + patButtonWidth / 2.0f, y + patButtonHeight / 2.0f);
+            labels.push_back(label);
+        }
+    }
+ 
 #pragma endregion
 
 #pragma endregion
 
-#pragma region Iteration
+    #pragma region Iteration
 
     iterationText.setFont(font);
     iterationText.setCharacterSize(22);
@@ -126,6 +146,9 @@ GraphicalDisplay::GraphicalDisplay(int _windowWidth, int _windowHeight, int cell
     iterationText.setPosition(20 + (3 * (buttonWidth + 20)), windowHeight + 20);
 
 #pragma endregion
+
+    #pragma endregion
+
 
 }
 
@@ -191,6 +214,8 @@ void GraphicalDisplay::show(Grid* grid)
     window->display();
 }
 
+#pragma region Event
+
 void GraphicalDisplay::handleEvents(Grid* grid) {
         Event event;
         while (window->pollEvent(event)) {
@@ -228,50 +253,6 @@ void GraphicalDisplay::handleEvents(Grid* grid) {
             }
         }
     }
-
-
-void GraphicalDisplay::setDelay(int milliseconds)
-{
-    delay = milliseconds;
-}
-
-void GraphicalDisplay::clear()
-{
-    window->clear(Color(20, 20, 20));
-}
-
-bool GraphicalDisplay::isOpen() const
-{
-    return window->isOpen();
-}
-
-
-void GraphicalDisplay::drawGrid(Grid* grid)
-{
-    RectangleShape cell(Vector2f(cellSize - 1.0f, cellSize - 1.0f));
-
-    for (int x = 0; x < grid->getRows(); x++) {
-        for (int y = 0; y < grid->getCols(); y++) {
-            Cell* currentCell = grid->getCell(x, y);
-
-            if (currentCell != nullptr && currentCell->isAlive() && !currentCell->getCurrentState()->isObstacle()) {
-                cell.setFillColor(Color(113, 96, 232)); //vivantes
-                cell.setPosition(x * cellSize, y * cellSize);
-                window->draw(cell);
-            }
-            if (currentCell != nullptr && currentCell->isAlive() && currentCell->getCurrentState()->isObstacle()) {
-                cell.setFillColor(Color(75, 67, 135)); //vivantes obstacle
-                cell.setPosition(x * cellSize, y * cellSize);
-                window->draw(cell);
-            }
-            if (currentCell != nullptr && !currentCell->isAlive() && currentCell->getCurrentState()->isObstacle()) {
-                cell.setFillColor(Color(37, 37, 38)); // motres obstacle
-                cell.setPosition(x * cellSize, y * cellSize);
-                window->draw(cell);
-            }
-        }
-    }
-}
 
 void GraphicalDisplay::handleButtonClick(int buttonIndex) {
     if (buttonIndex < 10) {
@@ -324,3 +305,49 @@ void GraphicalDisplay::handleButtonClick(int buttonIndex) {
         }
     }
 }
+
+#pragma endregion
+
+void GraphicalDisplay::setDelay(int milliseconds)
+{
+    delay = milliseconds;
+}
+
+void GraphicalDisplay::clear()
+{
+    window->clear(Color(20, 20, 20));
+}
+
+bool GraphicalDisplay::isOpen() const
+{
+    return window->isOpen();
+}
+
+
+void GraphicalDisplay::drawGrid(Grid* grid)
+{
+    RectangleShape cell(Vector2f(cellSize - 1.0f, cellSize - 1.0f));
+
+    for (int x = 0; x < grid->getRows(); x++) {
+        for (int y = 0; y < grid->getCols(); y++) {
+            Cell* currentCell = grid->getCell(x, y);
+
+            if (currentCell != nullptr && currentCell->isAlive() && !currentCell->getCurrentState()->isObstacle()) {
+                cell.setFillColor(Color(113, 96, 232)); //vivantes
+                cell.setPosition(x * cellSize, y * cellSize);
+                window->draw(cell);
+            }
+            if (currentCell != nullptr && currentCell->isAlive() && currentCell->getCurrentState()->isObstacle()) {
+                cell.setFillColor(Color(75, 67, 135)); //vivantes obstacle
+                cell.setPosition(x * cellSize, y * cellSize);
+                window->draw(cell);
+            }
+            if (currentCell != nullptr && !currentCell->isAlive() && currentCell->getCurrentState()->isObstacle()) {
+                cell.setFillColor(Color(37, 37, 38)); // motres obstacle
+                cell.setPosition(x * cellSize, y * cellSize);
+                window->draw(cell);
+            }
+        }
+    }
+}
+

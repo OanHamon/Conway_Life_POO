@@ -42,7 +42,7 @@ int ConsoleDisplay::askIterations()
     return maxIter;
 }
 
-string ConsoleDisplay::askPath() {
+string Display::askPath() {
     string path = "";
     cout << "chemin vers le fichier d'entree\n";
 

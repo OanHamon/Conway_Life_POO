@@ -2,6 +2,9 @@
 #include <omp.h>
 #include <iostream>
 
+
+#pragma region Constructeurs
+
 Grid::Grid(int _rows, int _cols, Rule* _rule)
     : rows(_rows), cols(_cols), rule(_rule)
 {
@@ -27,7 +30,7 @@ Grid::Grid(int _rows, int _cols, Rule* _rule, bool _zero)
     for (int i = 0; i < rows; i++) {
         cells[i].resize(cols);
         for (int j = 0; j < cols; j++) {
-            if(!_zero)
+            if (!_zero)
             {
                 int randomValue = rand() % 2;
                 if (randomValue == 1) {
@@ -36,7 +39,7 @@ Grid::Grid(int _rows, int _cols, Rule* _rule, bool _zero)
                 else {
                     cells[i][j] = new Cell(i, j, new DeadState());
                 }
-                
+
             }
             cells[i][j] = new Cell(i, j, new DeadState());
 
@@ -67,6 +70,8 @@ Grid::Grid(int _rows, int _cols, Rule* _rule, vector<vector<int>> _data)
         }
     }
 }
+#pragma endregion
+
 
 Grid::~Grid()
 {
@@ -76,6 +81,8 @@ Grid::~Grid()
         }
     }
 }
+
+#pragma region Setters/Getters
 
 int Grid::getRows() const
 {
@@ -100,6 +107,10 @@ void Grid::setRule(Rule* newRule)
     delete rule;
     rule = newRule;
 }
+
+
+#pragma endregion
+
 
 int Grid::countAliveNeighbors(Cell* cell)
 {
@@ -172,8 +183,9 @@ vector<vector<int>> Grid::getGridInt()
     return grid;
 }
 
+
 void Grid::placePattern(const Patern& pattern, int centerRow, int centerCol) {
-    // Calculer l'offset pour centrer le pattern
+    
     int offsetRow = centerRow - pattern.height / 2;
     int offsetCol = centerCol - pattern.width / 2;
 
@@ -183,8 +195,6 @@ void Grid::placePattern(const Patern& pattern, int centerRow, int centerCol) {
 
         if (targetRow >= 0 && targetRow < rows &&
             targetCol >= 0 && targetCol < cols) {
-
-            // Remplacer l'état de la cellule
             
             if(pattern.isObstacle){ cells[targetRow][targetCol]->setNextState(new AliveState(true)); } else { cells[targetRow][targetCol]->setNextState(new AliveState()); }
 
