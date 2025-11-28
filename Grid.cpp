@@ -80,7 +80,6 @@ Grid::~Grid()
             delete cells[i][j];
         }
     }
-    delete rule;
 }
 
 #pragma region Setters/Getters
@@ -196,6 +195,7 @@ void Grid::placePattern(const Patern& pattern, int centerRow, int centerCol) {
         }
     }
 }
+
 Cell* Grid::getCellFromPixel(int pixelX, int pixelY, int cellSize) {
     int row = pixelX / cellSize;
     int col = pixelY / cellSize;

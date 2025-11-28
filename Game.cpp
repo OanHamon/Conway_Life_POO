@@ -156,15 +156,27 @@ void Game::runGraphical(int maxIter)
         }
 
         if (display->state == RUNNING) {
+            vector<vector<int>> prevGridInt = grid->getGridInt();
             grid->computeNextGen();
             iterationsDone++;
             display->setIterationCounter(iterationsDone);
+            if (grid->getGridInt() == prevGridInt)
+            {
+                cout << "Etat stable fin du jeux\n";
+                break;
+            }
         }
         else if (display->state == STEP) {
+            vector<vector<int>> prevGridInt = grid->getGridInt();
             grid->computeNextGen();
             iterationsDone++;
             display->setIterationCounter(iterationsDone);
             display->state = PAUSED;
+            if (grid->getGridInt() == prevGridInt)
+            {
+                cout << "Etat stable fin du jeux\n";
+                break;
+            }
         }
         else if(display->state == CLEARED)
         {
@@ -192,7 +204,7 @@ void Game::runConsole()
 {
     ConsoleDisplay* display = new ConsoleDisplay();
 
-    int _maxIter = display->askIterations();
+    int maxIter = display->askIterations();
     int n_iter = 0;
 
     string path_in = display->askPath();
@@ -208,14 +220,20 @@ void Game::runConsole()
     Rule* conway = new ConwayRule();
     Grid* grid = new Grid(gridInt_in.size(), gridInt_in[0].size(), conway, gridInt_in);
 
-    while (n_iter<_maxIter) {
+    while (n_iter<maxIter) {
         display->clear();
         display->show(grid);
 
         path_out = path_in.substr(0, path_in.length() - 4) +  "_out/generation" + to_string(n_iter + 1) + ".txt";
         f_out = new FileManager(path_out);
 
+        vector<vector<int>> prevGridInt = grid->getGridInt();
         grid->computeNextGen();
+        if (grid->getGridInt() == prevGridInt)
+        {
+            cout << "Etat stable fin du jeux\n";
+            break;
+        }
 
         vector<vector<int>> gridInt_out = grid->getGridInt();
 
