@@ -6,7 +6,7 @@ class CellState
 public:
     CellState() : Obstacle(false) {};
     CellState(bool _ObsState) : Obstacle(_ObsState) {};
-    virtual ~CellState() {}
+    virtual ~CellState() = default;
     virtual bool isAlive() const = 0;
     virtual bool isObstacle() const = 0;
 

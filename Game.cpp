@@ -56,7 +56,6 @@ void Game::resetGrid(Grid*& grid, int gridWidth, int gridHeight)
 
 void Game::runGraphical(int maxIter)
 {
-    srand(time(0));
 
     const int cellSize = 8;
     const int gridWidth = 100;
@@ -86,16 +85,17 @@ void Game::runGraphical(int maxIter)
     }
     else 
     {
-        ConsoleDisplay tempDisplay; 
-        string path_in = tempDisplay.askPath();
+        Display* tempDisplay = new ConsoleDisplay();
+        string path_in = tempDisplay->askPath();
+        delete tempDisplay;
 
         FileManager f_in(path_in);
 
         vector<vector<int>> gridInt_in = f_in.getGrid();
 
         display = new GraphicalDisplay(
-            gridInt_in[0].size() * cellSize,
             gridInt_in.size() * cellSize,
+            gridInt_in[0].size() * cellSize,
             cellSize, FOCUSED
         );
 
@@ -105,7 +105,7 @@ void Game::runGraphical(int maxIter)
         f_out->saveGrid(gridInt_in);
 
 
-         grid = new Grid(gridInt_in.size(), gridInt_in[0].size(), conway, gridInt_in);
+        grid = new Grid(gridInt_in.size(), gridInt_in[0].size(), conway, gridInt_in);
     
     }
 
@@ -217,8 +217,8 @@ void Game::runConsole()
     FileManager* f_out = new FileManager(path_out);
     f_out->saveGrid(gridInt_in);
 
-    Rule* conway = new ConwayRule();
-    Grid* grid = new Grid(gridInt_in.size(), gridInt_in[0].size(), conway, gridInt_in);
+    Rule* rule = new ConwayRule();
+    Grid* grid = new Grid(gridInt_in.size(), gridInt_in[0].size(), rule, gridInt_in);
 
     while (n_iter<maxIter) {
         display->clear();
@@ -240,6 +240,6 @@ void Game::runConsole()
         f_out->saveGrid(gridInt_out);
 
         n_iter++;
-        sleep(milliseconds(500));
+        sleep(milliseconds(100));
     }
 }

@@ -1,14 +1,12 @@
 #include "GraphicalDisplay.h"
 #include <iostream>
 
-
-
 GraphicalDisplay::GraphicalDisplay(int _windowWidth, int _windowHeight, int cellSize, windowType type)
     : cellSize(cellSize), delay(100), windowWidth(_windowWidth), windowHeight(_windowHeight),
     iterationCounter(0), requestedRuleIndex(-1)
 {
     window = new RenderWindow(VideoMode(windowWidth + 300, windowHeight + 200), "Game of Life");
-    window->setFramerateLimit(60);
+    //window->setFramerateLimit(60);
 
     paterns = PaternLibrary::getAllPatterns();
 
@@ -323,29 +321,29 @@ bool GraphicalDisplay::isOpen() const
     return window->isOpen();
 }
 
-
 void GraphicalDisplay::drawGrid(Grid* grid)
 {
     RectangleShape cell(Vector2f(cellSize - 1.0f, cellSize - 1.0f));
 
-    for (int x = 0; x < grid->getRows(); x++) {
-        for (int y = 0; y < grid->getCols(); y++) {
-            Cell* currentCell = grid->getCell(x, y);
+    for (int row = 0; row < grid->getRows(); row++) {
+        for (int col = 0; col < grid->getCols(); col++) {
+            Cell* currentCell = grid->getCell(row, col);
 
-            if (currentCell != nullptr && currentCell->isAlive() && !currentCell->getCurrentState()->isObstacle()) {
-                cell.setFillColor(Color(113, 96, 232)); //vivantes
-                cell.setPosition(x * cellSize, y * cellSize);
-                window->draw(cell);
-            }
-            if (currentCell != nullptr && currentCell->isAlive() && currentCell->getCurrentState()->isObstacle()) {
-                cell.setFillColor(Color(75, 67, 135)); //vivantes obstacle
-                cell.setPosition(x * cellSize, y * cellSize);
-                window->draw(cell);
-            }
-            if (currentCell != nullptr && !currentCell->isAlive() && currentCell->getCurrentState()->isObstacle()) {
-                cell.setFillColor(Color(37, 37, 38)); // motres obstacle
-                cell.setPosition(x * cellSize, y * cellSize);
-                window->draw(cell);
+            if (currentCell != nullptr) {
+                cell.setPosition(col * cellSize, row * cellSize);
+
+                if (currentCell->isAlive() && !currentCell->getCurrentState()->isObstacle()) {
+                    cell.setFillColor(Color(113, 96, 232)); //vivantes
+                    window->draw(cell);
+                }
+                else if (currentCell->isAlive() && currentCell->getCurrentState()->isObstacle()) {
+                    cell.setFillColor(Color(75, 67, 135)); //vivantes obstacle
+                    window->draw(cell);
+                }
+                else if (!currentCell->isAlive() && currentCell->getCurrentState()->isObstacle()) {
+                    cell.setFillColor(Color(37, 37, 38)); // mortes obstacle
+                    window->draw(cell);
+                }
             }
         }
     }

@@ -17,6 +17,7 @@ private:
 
 public:
     FileManager(string _path);
+    ~FileManager() = default;
     string getPath();
     void setPath(string _path);
 

@@ -27,29 +27,3 @@ void ConsoleDisplay::clear()
 {
     cout << "\033[2J\033[1;1H";
 }
-
-int ConsoleDisplay::askIterations()
-{
-    int maxIter = 0;
-    cout << "Execution limitee a combien d'iterations ?\n";
-
-    while (!(cin >> maxIter) || maxIter <= 0) {
-        cout << "Nombre invalide, recommence : ";
-        cin.clear();
-        cin.ignore(numeric_limits<streamsize>::max(), '\n');
-    }
-
-    return maxIter;
-}
-
-string Display::askPath() {
-    string path = "";
-    cout << "chemin vers le fichier d'entree\n";
-
-    while (!(cin >> path)) {
-        cout << "Chemin invalide";
-        cin.clear();
-    }
-
-    return path;
-}
