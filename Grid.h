@@ -19,7 +19,7 @@ public:
 
     int getRows() const;
     int getCols() const;
-    Cell* getCell(int _row, int _col);
+    const Cell* getCell(int x, int y) const;
     void setRule(Rule* newRule);
     int countAliveNeighbors(Cell* cell);
     void computeNextGen();
@@ -27,7 +27,7 @@ public:
     vector<vector<int>> getGridInt();
     void placePattern(const Patern& pattern, int centerRow, int centerCol);
 
-    Cell* getCellFromPixel(int pixelX, int pixelY, int cellSize);
+    const Cell* getCellFromPixel(int pixelX, int pixelY, int cellSize) const;
 
 
 private:

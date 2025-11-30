@@ -80,7 +80,7 @@ void Game::runGraphical(int maxIter)
         display = new GraphicalDisplay(
             gridWidth * cellSize,
             gridHeight * cellSize,
-            cellSize, FULL
+            cellSize, PATERN
         );
     
     }
@@ -93,10 +93,12 @@ void Game::runGraphical(int maxIter)
 
         vector<vector<int>> gridInt_in = f_in.getGrid();
 
+        int gridRows = gridInt_in.size();        // Nombre de lignes (hauteur)
+        int gridCols = gridInt_in[0].size();
+
         display = new GraphicalDisplay(
-            gridInt_in[0].size() * cellSize,
-            gridInt_in.size() * cellSize,
-            cellSize, FOCUSED
+            gridCols,
+            gridRows, FULL
         );
 
         string path_out = path_in.substr(0, path_in.length() - 4) + "_out/generation0.txt";
@@ -105,7 +107,7 @@ void Game::runGraphical(int maxIter)
         f_out->saveGrid(gridInt_in);
 
 
-         grid = new Grid(gridInt_in.size(), gridInt_in[0].size(), conway, gridInt_in);
+         grid = new Grid(gridRows, gridCols, conway, gridInt_in);
     
     }
 

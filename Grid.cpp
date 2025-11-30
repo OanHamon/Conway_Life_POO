@@ -94,7 +94,7 @@ int Grid::getCols() const
     return cols;
 }
 
-Cell* Grid::getCell(int _row, int _col)
+const Cell* Grid::getCell(int _row, int _col) const
 {
     if (_row < 0 || _row >= rows || _col < 0 || _col >= cols) {
         return nullptr;
@@ -196,7 +196,7 @@ void Grid::placePattern(const Patern& pattern, int centerRow, int centerCol) {
     }
 }
 
-Cell* Grid::getCellFromPixel(int pixelX, int pixelY, int cellSize) {
+const Cell* Grid::getCellFromPixel(int pixelX, int pixelY, int cellSize) const{
     int row = pixelX / cellSize;
     int col = pixelY / cellSize;
     return getCell(row, col);
