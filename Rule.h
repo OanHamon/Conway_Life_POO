@@ -40,18 +40,6 @@ public:
     CellState* computeNextState(Cell* cell, Grid* grid) override;
 };
 
-class ChromaticLifeRule : public Rule
-{
-public:
-    CellState* computeNextState(Cell* cell, Grid* grid) override;
-};
-
-class BloomLifeRule : public Rule
-{
-public:
-    CellState* computeNextState(Cell* cell, Grid* grid) override;
-};
-
 class MazeRule : public Rule
 {
 public:

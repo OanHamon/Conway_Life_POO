@@ -56,7 +56,6 @@ void Game::resetGrid(Grid*& grid, int gridWidth, int gridHeight)
 
 void Game::runGraphical(int maxIter)
 {
-    srand(time(0));
 
     const int cellSize = 8;
     const int gridWidth = 100;
@@ -86,8 +85,9 @@ void Game::runGraphical(int maxIter)
     }
     else 
     {
-        ConsoleDisplay tempDisplay; 
-        string path_in = tempDisplay.askPath();
+        Display* tempDisplay = new ConsoleDisplay();
+        string path_in = tempDisplay->askPath();
+        delete tempDisplay;
 
         FileManager f_in(path_in);
 
@@ -215,12 +215,12 @@ void Game::runConsole()
 
     vector<vector<int>> gridInt_in = f_in.getGrid();
 
-    string path_out = path_in.substr(0, path_in.length() - 4) + "_out/generation0.txt";
+    string path_out = path_in.substr(0, path_in.length() - 4) + "_out/generationInitiale.txt";
     FileManager* f_out = new FileManager(path_out);
     f_out->saveGrid(gridInt_in);
 
-    Rule* conway = new ConwayRule();
-    Grid* grid = new Grid(gridInt_in.size(), gridInt_in[0].size(), conway, gridInt_in);
+    Rule* rule = new ConwayRule();
+    Grid* grid = new Grid(gridInt_in.size(), gridInt_in[0].size(), rule, gridInt_in);
 
     while (n_iter<maxIter) {
         display->clear();
@@ -242,6 +242,6 @@ void Game::runConsole()
         f_out->saveGrid(gridInt_out);
 
         n_iter++;
-        sleep(milliseconds(500));
+        sleep(milliseconds(100));
     }
 }
