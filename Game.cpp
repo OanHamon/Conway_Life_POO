@@ -56,44 +56,38 @@ void Game::resetGrid(Grid*& grid, int gridWidth, int gridHeight)
 
 void Game::runGraphical(int maxIter)
 {
-
     const int cellSize = 8;
     const int gridWidth = 100;
     const int gridHeight = 100;
-
-
 
     int answer;
     std::cout << "Voulez Entrez une grille ou aléatoire ?" << endl << "Réponse (0-1) : ";
     cin >> answer;
 
+    Grid* grid = nullptr;
+    GraphicalDisplay* display = nullptr;
 
-    Grid* grid;
-    Rule* conway = new ConwayRule();
-    GraphicalDisplay* display;
-
-    if(answer == 1)
+    if (answer == 1)
     {
+        Rule* conway = new ConwayRule();
         grid = new Grid(gridWidth, gridHeight, conway);
 
         display = new GraphicalDisplay(
             gridWidth * cellSize,
             gridHeight * cellSize,
-            cellSize, PATERN
+            cellSize, FULL
         );
-    
     }
-    else 
+    else
     {
         Display* tempDisplay = new ConsoleDisplay();
         string path_in = tempDisplay->askPath();
         delete tempDisplay;
 
         FileManager f_in(path_in);
-
         vector<vector<int>> gridInt_in = f_in.getGrid();
 
-        int gridRows = gridInt_in.size();        // Nombre de lignes (hauteur)
+        int gridRows = gridInt_in.size();
         int gridCols = gridInt_in[0].size();
 
         display = new GraphicalDisplay(
@@ -105,16 +99,11 @@ void Game::runGraphical(int maxIter)
 
         FileManager* f_out = new FileManager(path_out);
         f_out->saveGrid(gridInt_in);
+        delete f_out; 
 
-
-         grid = new Grid(gridRows, gridCols, conway, gridInt_in);
-    
+        Rule* conway = new ConwayRule();
+        grid = new Grid(gridRows, gridCols, conway, gridInt_in);
     }
-
-
-
-
-
 
     int iterationsDone = 0;
     int currentRuleIndex = 0;
@@ -139,11 +128,11 @@ void Game::runGraphical(int maxIter)
                 break;
             case 1:
                 newRule = new DayAndNightRule();
-                std::cout << "Regle : High Life\n";
+                std::cout << "Regle : Day and Night\n";
                 break;
             case 2:
                 newRule = new CoagulationsRule();
-                std::cout << "Regle : Day and Night\n";
+                std::cout << "Regle : Coagulations\n";
                 break;
             default:
                 newRule = new ConwayRule();
@@ -180,9 +169,11 @@ void Game::runGraphical(int maxIter)
                 break;
             }
         }
-        else if(display->state == CLEARED)
+        else if (display->state == CLEARED)
         {
-            grid = new Grid(gridWidth, gridHeight, conway,true);
+            delete grid; 
+            Rule* conway = new ConwayRule();
+            grid = new Grid(gridWidth, gridHeight, conway, true);
             iterationsDone = 0;
             display->setIterationCounter(0);
             display->state = PAUSED;
@@ -212,21 +203,21 @@ void Game::runConsole()
     string path_in = display->askPath();
 
     FileManager f_in(path_in);
-
     vector<vector<int>> gridInt_in = f_in.getGrid();
 
     string path_out = path_in.substr(0, path_in.length() - 4) + "_out/generationInitiale.txt";
     FileManager* f_out = new FileManager(path_out);
     f_out->saveGrid(gridInt_in);
+    delete f_out; 
 
     Rule* rule = new ConwayRule();
     Grid* grid = new Grid(gridInt_in.size(), gridInt_in[0].size(), rule, gridInt_in);
 
-    while (n_iter<maxIter) {
+    while (n_iter < maxIter) {
         display->clear();
         display->show(grid);
 
-        path_out = path_in.substr(0, path_in.length() - 4) +  "_out/generation" + to_string(n_iter + 1) + ".txt";
+        path_out = path_in.substr(0, path_in.length() - 4) + "_out/generation" + to_string(n_iter + 1) + ".txt";
         f_out = new FileManager(path_out);
 
         vector<vector<int>> prevGridInt = grid->getGridInt();
@@ -234,14 +225,18 @@ void Game::runConsole()
         if (grid->getGridInt() == prevGridInt)
         {
             cout << "Etat stable fin du jeux\n";
+            delete f_out;
             break;
         }
 
         vector<vector<int>> gridInt_out = grid->getGridInt();
-
         f_out->saveGrid(gridInt_out);
+        delete f_out;
 
         n_iter++;
         sleep(milliseconds(100));
     }
+
+    delete display; 
+    delete grid;    
 }
