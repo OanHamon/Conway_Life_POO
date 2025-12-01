@@ -22,25 +22,7 @@ public:
     CellState* computeNextState(Cell* cell, Grid* grid) override;
 };
 
-class SeedsRule : public Rule
-{
-public:
-    CellState* computeNextState(Cell* cell, Grid* grid) override;
-};
-
 class DayAndNightRule : public Rule
-{
-public:
-    CellState* computeNextState(Cell* cell, Grid* grid) override;
-};
-
-class TectonicRule : public Rule
-{
-public:
-    CellState* computeNextState(Cell* cell, Grid* grid) override;
-};
-
-class MazeRule : public Rule
 {
 public:
     CellState* computeNextState(Cell* cell, Grid* grid) override;
@@ -52,8 +34,3 @@ public:
     CellState* computeNextState(Cell* cell, Grid* grid) override;
 };
 
-class CoralRule : public Rule
-{
-public:
-    CellState* computeNextState(Cell* cell, Grid* grid) override;
-};

@@ -59,6 +59,8 @@ void Game::runGraphical(int maxIter)
     const int cellSize = 8;
     const int gridWidth = 100;
     const int gridHeight = 100;
+    int actualGridWidth = gridWidth;
+    int actualGridHeight = gridHeight;
 
     int answer;
     std::cout << "Voulez Entrez une grille ou aléatoire ?" << endl << "Réponse (0-1) : ";
@@ -102,7 +104,10 @@ void Game::runGraphical(int maxIter)
         delete f_out; 
 
         Rule* conway = new ConwayRule();
-        grid = new Grid(gridRows, gridCols, conway, gridInt_in);
+
+        actualGridHeight = gridRows;
+        actualGridWidth = gridCols;
+        grid = new Grid(actualGridHeight, actualGridWidth, conway, gridInt_in);
     }
 
     int iterationsDone = 0;
@@ -112,7 +117,7 @@ void Game::runGraphical(int maxIter)
 
         display->handleEvents(grid);
 
-        if (display->restartRequested) {
+        if (display->restartRequested && answer ==1) {
 
             int ruleIndex = display->getRequestedRuleIndex();
             if (ruleIndex != -1) {
@@ -139,7 +144,9 @@ void Game::runGraphical(int maxIter)
             }
 
             delete grid;
-            grid = new Grid(gridWidth, gridHeight, newRule);
+
+            grid = new Grid(actualGridHeight, actualGridWidth, newRule);
+
             iterationsDone = 0;
             display->setIterationCounter(0);
             display->restartRequested = false;
@@ -173,7 +180,7 @@ void Game::runGraphical(int maxIter)
         {
             delete grid; 
             Rule* conway = new ConwayRule();
-            grid = new Grid(gridWidth, gridHeight, conway, true);
+            grid = new Grid(actualGridHeight, actualGridWidth, conway, true);
             iterationsDone = 0;
             display->setIterationCounter(0);
             display->state = PAUSED;

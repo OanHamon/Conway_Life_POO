@@ -339,7 +339,6 @@ void GraphicalDisplay::handleMouseClick(int mouseX, int mouseY, Grid* grid)
 {
     Vector2f mousePos(mouseX, mouseY);
 
-    // Clic dans la grille en mode pattern
     if (patternMode && mouseX < windowWidth && mouseY < windowHeight)
     {
         placePattern(mouseX, mouseY, grid);
@@ -347,8 +346,6 @@ void GraphicalDisplay::handleMouseClick(int mouseX, int mouseY, Grid* grid)
         selectedPatternIndex = -1;
         return;
     }
-
-    // Vérifier les boutons
     for (size_t i = 0; i < buttons.size(); ++i)
     {
         if (buttons[i]->getGlobalBounds().contains(mousePos))
@@ -359,7 +356,7 @@ void GraphicalDisplay::handleMouseClick(int mouseX, int mouseY, Grid* grid)
     }
 }
 
-void GraphicalDisplay::placePattern(int mouseX, int mouseY, Grid* grid)
+void GraphicalDisplay::placePattern(int mouseY, int mouseX, Grid* grid)
 {
     int gridX = mouseX / cellSize;
     int gridY = mouseY / cellSize;
