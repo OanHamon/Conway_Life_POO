@@ -52,7 +52,7 @@ CellState* DayAndNightRule::computeNextState(Cell* cell, Grid* grid) {
             : static_cast<CellState*>(new DeadState(isObstacle));
     }
     else {
-        // Naissance avec 3, 6, 7, ou 8 voisins
+        // Naissance avec 3, 6, 7, ou 8 voisinsz
         return (aliveNeighbors == 3 || aliveNeighbors == 6 ||
             aliveNeighbors == 7 || aliveNeighbors == 8)
             ? static_cast<CellState*>(new AliveState(isObstacle))

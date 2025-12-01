@@ -59,8 +59,8 @@ void Game::runGraphical(int maxIter)
     const int cellSize = 8;
     const int gridWidth = 100;
     const int gridHeight = 100;
-    int actualGridWidth = gridWidth;
-    int actualGridHeight = gridHeight;
+    size_t actualGridWidth = gridWidth;
+    size_t actualGridHeight = gridHeight;
 
     int answer;
     cout << "Voulez Entrez une grille ou aleatoire ?\nReponse:\n0 - Non\n1 - Oui\n";
@@ -89,12 +89,12 @@ void Game::runGraphical(int maxIter)
         FileManager f_in(path_in);
         vector<vector<int>> gridInt_in = f_in.getGrid();
 
-        int gridRows = gridInt_in.size();
-        int gridCols = gridInt_in[0].size();
+        size_t gridRows =  gridInt_in.size();
+        size_t gridCols = gridInt_in[0].size();
 
         display = new GraphicalDisplay(
-            gridCols,
-            gridRows, FULL
+            static_cast<int>(gridCols),
+             static_cast<int>(gridRows), FULL
         );
 
         string path_out = path_in.substr(0, path_in.length() - 4) + "_out/generation0.txt";
@@ -107,7 +107,7 @@ void Game::runGraphical(int maxIter)
 
         actualGridHeight = gridRows;
         actualGridWidth = gridCols;
-        grid = new Grid(actualGridHeight, actualGridWidth, conway, gridInt_in);
+        grid = new Grid(static_cast<int>(actualGridHeight), static_cast<int>(actualGridWidth), conway, gridInt_in);
     }
 
     int iterationsDone = 0;
@@ -145,7 +145,7 @@ void Game::runGraphical(int maxIter)
 
             delete grid;
 
-            grid = new Grid(actualGridHeight, actualGridWidth, newRule);
+            grid = new Grid(static_cast<int>(actualGridHeight), static_cast<int>(actualGridWidth), newRule);
 
             iterationsDone = 0;
             display->setIterationCounter(0);
@@ -180,7 +180,7 @@ void Game::runGraphical(int maxIter)
         {
             delete grid; 
             Rule* conway = new ConwayRule();
-            grid = new Grid(actualGridHeight, actualGridWidth, conway, true);
+            grid = new Grid(static_cast<int>(actualGridHeight), static_cast<int>(actualGridWidth), conway, true);
             iterationsDone = 0;
             display->setIterationCounter(0);
             display->state = PAUSED;
@@ -218,7 +218,7 @@ void Game::runConsole()
     delete f_out; 
 
     Rule* rule = new ConwayRule();
-    Grid* grid = new Grid(gridInt_in.size(), gridInt_in[0].size(), rule, gridInt_in);
+    Grid* grid = new Grid(static_cast<int>(gridInt_in.size()), static_cast<int>(gridInt_in[0].size()), rule, gridInt_in);
 
     while (n_iter < maxIter) {
         display->clear();
