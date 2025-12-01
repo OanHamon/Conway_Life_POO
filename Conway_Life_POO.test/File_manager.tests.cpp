@@ -1,10 +1,10 @@
-
 #include "pch.h"
 #include "CppUnitTest.h"
 #include "../FileManager.h"
 #include "../FileManager.cpp"
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
+using namespace std;
 
 namespace FileManagerTests
 {
@@ -13,16 +13,15 @@ namespace FileManagerTests
     public:
         TEST_METHOD(TestSaveAndGetGrid)
         {
-            std::string testPath = "grid.txt";
-            FileManager fm(testPath);
+            FileManager fm("grid.txt");
 
-            std::vector<std::vector<int>> grid = { {1, 2}, {3, 4} };
+            vector<vector<int>> grid = { {1, 0}, {-1, 1} };
             Assert::IsTrue(fm.saveGrid(grid), L"saveGrid échoué");
 
             auto loadedGrid = fm.getGrid();
             Assert::AreEqual((size_t)2, loadedGrid.size(), L"Nombre de lignes incorrect");
             Assert::AreEqual((size_t)2, loadedGrid[0].size(), L"Nombre de colonnes incorrect");
-            Assert::AreEqual(3, loadedGrid[1][0], L"Valeur incorrecte");
+            Assert::AreEqual(-1, loadedGrid[1][0], L"Valeur incorrecte");
         }
     };
 }

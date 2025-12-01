@@ -88,14 +88,14 @@ namespace GridGameCalculationTest
                 {0, 0, 0, 0},
                 {0 ,1, 2, 0},
                 {0 ,2, 1, 0},
-                {0, 0, 0, 0}
+                {-1,0, 0, 0}
             };
 
             vector<vector<int>> attendueGridInt = {
                 {0, 0, 0, 0},
                 {0 ,1, 2, 0},
                 {0 ,2, 1, 0},
-                {0, 0, 0, 0}
+                {-1,0, 0, 0}
             };
 
             int nIter = 5;
