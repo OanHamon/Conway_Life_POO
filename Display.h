@@ -1,8 +1,10 @@
 #pragma once
 #include <iostream>
+#include <filesystem>
 #include <string>
 #include "Grid.h"
 
+namespace fs = std::filesystem;
 using namespace std;
 
 class Display
@@ -14,11 +16,12 @@ public:
 
     virtual string askPath() {
         string path;
-        cout << "chemin vers le fichier d'entree\n";
+        cout << "chemin vers le fichier d'entree : ";
 
-        while (!(cin >> path)) {
-            cout << "Chemin invalide";
+        while (!(cin >> path) || !fs::exists(path)) {
+            cerr << "Erreur : Chemin invalide ou introuvable\n";
             cin.clear();
+            cout << "chemin vers le fichier d'entree : ";
         }
 
         return path;

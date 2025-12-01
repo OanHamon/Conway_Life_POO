@@ -63,7 +63,7 @@ void Game::runGraphical(int maxIter)
     int actualGridHeight = gridHeight;
 
     int answer;
-    std::cout << "Voulez Entrez une grille ou aléatoire ?" << endl << "Réponse (0-1) : ";
+    cout << "Voulez Entrez une grille ou aleatoire ?\nReponse:\n0 - Non\n1 - Oui\n";
     cin >> answer;
 
     Grid* grid = nullptr;
