@@ -64,7 +64,7 @@ void Game::runGraphical(int maxIter)
 
     int answer;
     cout << "Voulez Entrez une grille ou aleatoire ?\nReponse:\n0 - Non\n1 - Oui\n";
-    cin >> answer;
+    cin >> answer; 
 
     Grid* grid = nullptr;
     GraphicalDisplay* display = nullptr;
