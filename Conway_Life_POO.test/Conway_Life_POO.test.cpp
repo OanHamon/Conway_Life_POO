@@ -36,7 +36,9 @@ namespace GridGameCalculationTest
 
 
             // test
-            Grid grid(inGridInt.size(), inGridInt[0].size(), &rule, inGridInt);
+            size_t gridX = inGridInt.size();
+            size_t gridY = inGridInt[0].size();
+            Grid grid(static_cast<int>(gridX), static_cast<int>(gridY), &rule, inGridInt);
 
             for (int i = 0; i < nIter; i++)
             {
@@ -70,7 +72,9 @@ namespace GridGameCalculationTest
 
 
             // test
-            Grid grid(inGridInt.size(), inGridInt[0].size(), &rule, inGridInt);
+            size_t gridX = inGridInt.size();
+            size_t gridY = inGridInt[0].size();
+            Grid grid(static_cast<int>(gridX), static_cast<int>(gridY), &rule, inGridInt);
 
             for (int i = 0; i < nIter; i++)
             {
@@ -104,7 +108,9 @@ namespace GridGameCalculationTest
 
 
             // test
-            Grid grid(inGridInt.size(), inGridInt[0].size(), &rule, inGridInt);
+            size_t gridX = inGridInt.size();
+            size_t gridY = inGridInt[0].size();
+            Grid grid(static_cast<int>(gridX), static_cast<int>(gridY), &rule, inGridInt);
 
             for (int i = 0; i < nIter; i++)
             {
@@ -140,7 +146,9 @@ namespace GridGameCalculationTest
 
 
             // test
-            Grid grid(inGridInt.size(), inGridInt[0].size(), &rule, inGridInt);
+            size_t gridX = inGridInt.size();
+            size_t gridY = inGridInt[0].size();
+            Grid grid(static_cast<int>(gridX), static_cast<int>(gridY), &rule, inGridInt);
 
             for (int i = 0; i < nIter; i++)
             {
