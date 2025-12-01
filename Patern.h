@@ -144,30 +144,47 @@ public:
     static Patern getGliderShooter() {
         Patern p("GliderShooter");
 
-        // Le célèbre Gosper Glider Gun
-        // Bloc de gauche
-        p.addCell(0, 4); p.addCell(0, 5);
-        p.addCell(1, 4); p.addCell(1, 5);
+        p.addCell(0, 4);
+        p.addCell(0, 5);
+        p.addCell(1, 4);
+        p.addCell(1, 5);
 
-        // Partie centrale
-        p.addCell(10, 4); p.addCell(10, 5); p.addCell(10, 6);
-        p.addCell(11, 3); p.addCell(11, 7);
-        p.addCell(12, 2); p.addCell(12, 8);
-        p.addCell(13, 2); p.addCell(13, 8);
+        p.addCell(10, 4);
+        p.addCell(10, 5);
+        p.addCell(10, 6);
+        p.addCell(11, 3);
+        p.addCell(11, 7);
+        p.addCell(12, 2);
+        p.addCell(12, 8);
+        p.addCell(13, 2);
+        p.addCell(13, 8);
         p.addCell(14, 5);
-        p.addCell(15, 3); p.addCell(15, 7);
-        p.addCell(16, 4); p.addCell(16, 5); p.addCell(16, 6);
+        p.addCell(15, 3);
+        p.addCell(15, 7);
+        p.addCell(16, 4);
+        p.addCell(16, 5); 
+        p.addCell(16, 6);
         p.addCell(17, 5);
 
         // Partie droite
-        p.addCell(20, 2); p.addCell(20, 3); p.addCell(20, 4);
-        p.addCell(21, 2); p.addCell(21, 3); p.addCell(21, 4);
-        p.addCell(22, 1); p.addCell(22, 5);
-        p.addCell(24, 0); p.addCell(24, 1); p.addCell(24, 5); p.addCell(24, 6);
+        p.addCell(20, 2); 
+        p.addCell(20, 3); 
+        p.addCell(20, 4);
+        p.addCell(21, 2);
+        p.addCell(21, 3);
+        p.addCell(21, 4);
+        p.addCell(22, 1);
+        p.addCell(22, 5);
+        p.addCell(24, 0);
+        p.addCell(24, 1);
+        p.addCell(24, 5);
+        p.addCell(24, 6);
 
         // Petit bloc à droite
-        p.addCell(34, 2); p.addCell(34, 3);
-        p.addCell(35, 2); p.addCell(35, 3);
+        p.addCell(34, 2);
+        p.addCell(34, 3);
+        p.addCell(35, 2);
+        p.addCell(35, 3);
 
         return p;
     }
