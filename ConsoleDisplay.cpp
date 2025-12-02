@@ -4,6 +4,8 @@
 
 using namespace std;
 
+#pragma region MethodeJeu
+
 void ConsoleDisplay::show(Grid* _grid) {
     for (int i = 0; i < _grid->getRows(); i++)
     {
@@ -23,7 +25,10 @@ void ConsoleDisplay::show(Grid* _grid) {
     cout << "\n\n";
 }
 
-void ConsoleDisplay::clear() 
+void ConsoleDisplay::clear()
 {
     cout << "\033[2J\033[1;1H";
 }
+
+#pragma endregion
+

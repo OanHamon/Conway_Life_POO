@@ -9,30 +9,7 @@
 
 namespace fs = std::filesystem;
 
-bool FileManager::write(const std::string _msg) {
-    std::ofstream f(path, std::ios::out | std::ios::trunc);
-    if (!f.is_open()) {
-        std::cerr << "Erreur lors de l'ouverture du fichier !" << std::endl;
-        return false;
-    }
-    f << _msg;
-    return true;
-}
-
-bool FileManager::read(std::string* _output) {
-    std::ifstream f(path, std::ios::in);
-    if (!f.is_open()) {
-        std::cerr << "Erreur : impossible d'ouvrir le fichier !" << std::endl;
-        return false;
-    }
-    *_output = std::string((std::istreambuf_iterator<char>(f)), std::istreambuf_iterator<char>());
-    return true;
-}
-
-bool FileManager::clearFile() {
-    return write("");
-}
-
+#pragma region Constructeurs
 FileManager::FileManager(const std::string _path) : path(_path) {
 
     fs::path p(path);
@@ -45,6 +22,9 @@ FileManager::FileManager(const std::string _path) : path(_path) {
     }
 
 }
+#pragma endregion
+
+#pragma region Setters/Getters
 
 std::string FileManager::getPath() {
     return path;
@@ -73,6 +53,37 @@ std::vector<std::vector<int>> FileManager::getGrid() {
     return grid;
 }
 
+#pragma endregion
+
+#pragma region MethodeJeu
+
+
+bool FileManager::write(const std::string _msg) {
+    std::ofstream f(path, std::ios::out | std::ios::trunc);
+    if (!f.is_open()) {
+        std::cerr << "Erreur lors de l'ouverture du fichier !" << std::endl;
+        return false;
+    }
+    f << _msg;
+    return true;
+}
+
+bool FileManager::read(std::string* _output) {
+    std::ifstream f(path, std::ios::in);
+    if (!f.is_open()) {
+        std::cerr << "Erreur : impossible d'ouvrir le fichier !" << std::endl;
+        return false;
+    }
+    *_output = std::string((std::istreambuf_iterator<char>(f)), std::istreambuf_iterator<char>());
+    return true;
+}
+
+bool FileManager::clearFile() {
+    return write("");
+}
+
+
+
 bool FileManager::saveGrid(const std::vector<std::vector<int>>& _grid) {
     if (_grid.empty() || _grid[0].empty()) {
         std::cerr << "Erreur: la grille est vide ou invalide." << std::endl;
@@ -99,3 +110,6 @@ bool FileManager::saveGrid(const std::vector<std::vector<int>>& _grid) {
 
     return write(oss.str());
 }
+
+
+#pragma endregion

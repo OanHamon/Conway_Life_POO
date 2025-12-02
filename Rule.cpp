@@ -1,6 +1,9 @@
 #include "Rule.h"
 #include "Grid.h"
 
+#pragma region Règles
+
+
 CellState* ConwayRule::computeNextState(Cell* cell, Grid* grid) {
     bool isCurrentlyAlive = cell->isAlive();
     bool isObstacle = cell->getCurrentState()->isObstacle();
@@ -81,3 +84,5 @@ CellState* CoagulationsRule::computeNextState(Cell* cell, Grid* grid) {
     }
 }
 
+
+#pragma endregion

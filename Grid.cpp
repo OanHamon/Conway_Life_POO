@@ -3,7 +3,7 @@
 #include <iostream>
 
 
-#pragma region Constructeurs
+#pragma region Constructeurs/Destructeurs
 
 Grid::Grid(int _rows, int _cols, Rule* _rule)
     : rows(_rows), cols(_cols), rule(_rule)
@@ -70,8 +70,6 @@ Grid::Grid(int _rows, int _cols, Rule* _rule, vector<vector<int>> _data)
         }
     }
 }
-#pragma endregion
-
 
 Grid::~Grid()
 {
@@ -81,6 +79,7 @@ Grid::~Grid()
         }
     }
 }
+#pragma endregion
 
 #pragma region Setters/Getters
 
@@ -111,6 +110,7 @@ void Grid::setRule(Rule* newRule)
 
 #pragma endregion
 
+#pragma region MethodeJeux
 
 int Grid::countAliveNeighbors(Cell* cell)
 {
@@ -183,7 +183,6 @@ vector<vector<int>> Grid::getGridInt()
     return grid;
 }
 
-
 void Grid::placePattern(const Patern& pattern, int centerRow, int centerCol) {
     
     int offsetRow = centerRow - pattern.height / 2;
@@ -208,3 +207,5 @@ const Cell* Grid::getCellFromPixel(int pixelX, int pixelY, int cellSize) const{
     int col = pixelY / cellSize;
     return getCell(row, col);
 }
+
+#pragma endregion

@@ -1,6 +1,8 @@
 #include "GraphicalDisplay.h"
 #include <iostream>
 
+
+#pragma region Constructeurs
 // Constructeur 1 : avec cellSize explicite
 GraphicalDisplay::GraphicalDisplay(int _windowWidth, int _windowHeight, int cellSize, windowType type)
     : cellSize(cellSize), delay(100), windowWidth(_windowWidth), windowHeight(_windowHeight),
@@ -42,8 +44,9 @@ GraphicalDisplay::~GraphicalDisplay()
     }
     delete window;
 }
+#pragma endregion
 
-// Méthodes privées d'initialisation
+#pragma region Initialisation
 void GraphicalDisplay::initWindowsDimension(windowType type)
 {
     constexpr int BOTTOM_DIV_HEIGHT = 200;
@@ -93,10 +96,8 @@ void GraphicalDisplay::initGUI(windowType type)
     constexpr int SPACING = 20;
 
     // Calculer la position de base de la grille (sans les extensions)
-    int baseGridHeight = (type == MANAGEMENT || type == SPEED || type == FULL)
-        ? windowHeight - 200 : windowHeight;
-    int baseGridWidth = (type == PATERN || type == SPEED || type == FULL)
-        ? windowWidth - 300 : windowWidth;
+    int baseGridHeight = (type == MANAGEMENT || type == SPEED || type == FULL) ? windowHeight - 200 : windowHeight;
+    int baseGridWidth = (type == PATERN || type == SPEED || type == FULL)  ? windowWidth - 300 : windowWidth;
 
     // Boutons de gestion
     if (type == MANAGEMENT || type == FULL)
@@ -145,10 +146,7 @@ void GraphicalDisplay::initGUI(windowType type)
     iterationText.setPosition(20.f + (3 * (BUTTON_WIDTH + 20)), baseGridHeight + 20.f);
 }
 
-void GraphicalDisplay::createButtonGroup(const std::vector<std::string>& names,
-    int buttonWidth, int buttonHeight, int spacing,
-    float startY, int columns, bool horizontal,
-    float startX, ButtonType type)
+void GraphicalDisplay::createButtonGroup(const std::vector<std::string>& names,int buttonWidth, int buttonHeight, int spacing,float startY, int columns, bool horizontal,float startX, ButtonType type)
 {
     size_t startIndex = buttons.size();
 
@@ -192,8 +190,9 @@ void GraphicalDisplay::createButtonGroup(const std::vector<std::string>& names,
         buttonTypes.push_back(type);
     }
 }
+#pragma endregion
 
-// Getters/Setters
+#pragma region Getters/Setters
 void GraphicalDisplay::setIterationCounter(int value)
 {
     iterationCounter = value;
@@ -220,7 +219,9 @@ void GraphicalDisplay::resetRequestedRuleIndex()
     requestedRuleIndex = -1;
 }
 
-// Méthodes d'affichage
+#pragma endregion
+
+#pragma region Affichage Visuelle
 void GraphicalDisplay::show(Grid* grid)
 {
     clear();
@@ -230,6 +231,7 @@ void GraphicalDisplay::show(Grid* grid)
     window->draw(iterationText);
     window->display();
 }
+
 
 void GraphicalDisplay::drawBorder(Grid* grid) const
 {
@@ -311,13 +313,15 @@ void GraphicalDisplay::clear()
     window->clear(Color(20, 20, 20));
 }
 
+#pragma endregion
+
+#pragma region Event
+
 bool GraphicalDisplay::isOpen() const
 {
     return window->isOpen();
 }
 
-
-#pragma region Event
 void GraphicalDisplay::handleEvents(Grid* grid)
 {
     Event event;

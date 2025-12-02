@@ -10,6 +10,8 @@
 
 using namespace std;
 
+#pragma region Menu/Gestion
+
 Game::Game() {}
 
 void Game::run()
@@ -53,6 +55,9 @@ void Game::resetGrid(Grid*& grid, int gridWidth, int gridHeight)
     Rule* conway = new ConwayRule();
     grid = new Grid(gridWidth, gridHeight, conway);
 }
+#pragma endregion
+
+#pragma region ModeGraphique
 
 void Game::runGraphical(int maxIter)
 {
@@ -200,6 +205,10 @@ void Game::runGraphical(int maxIter)
     delete grid;
 }
 
+#pragma endregion
+
+#pragma region ModeConsole
+
 void Game::runConsole()
 {
     ConsoleDisplay* display = new ConsoleDisplay();
@@ -247,3 +256,5 @@ void Game::runConsole()
     delete display; 
     delete grid;    
 }
+
+#pragma endregion

@@ -1,5 +1,6 @@
 #include "Cell.h"
 
+#pragma region MethodeJeu
 
 void Cell::updateState()
 {
@@ -17,3 +18,6 @@ void Cell::setNextState(CellState* _state)
     }
     nextState = _state;
 }
+
+#pragma endregion
+
