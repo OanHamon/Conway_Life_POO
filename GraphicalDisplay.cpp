@@ -105,7 +105,7 @@ void GraphicalDisplay::initGUI(windowType type)
         const std::vector<std::string> names = { "Pause", "Next", "Restart", "Rule1", "Rule2", "Rule3" };
         createButtonGroup(names, BUTTON_WIDTH, BUTTON_HEIGHT, SPACING,
             baseGridHeight + 20.f, 3, true, 20.f, ButtonType::MANAGEMENT);
-        managementButtonsCount = names.size();
+        managementButtonsCount = static_cast<int>(names.size());
     }
 
     // Boutons de vitesse
@@ -118,7 +118,7 @@ void GraphicalDisplay::initGUI(windowType type)
         float startX = 20.f + (3 * (BUTTON_WIDTH + 20));
         createButtonGroup(speeds, SPEED_BUTTON_WIDTH, SPEED_BUTTON_HEIGHT, SPACING,
             baseGridHeight + 70.f, 2, true, startX, ButtonType::SPEED);
-        speedButtonsCount = speeds.size();
+        speedButtonsCount = static_cast<int>(speeds.size());
     }
 
     // Boutons de patterns
@@ -135,7 +135,7 @@ void GraphicalDisplay::initGUI(windowType type)
 
         createButtonGroup(patternNames, PAT_BUTTON_WIDTH, PAT_BUTTON_HEIGHT, SPACING,
             50.f, 6, false, baseGridWidth + 40.f, ButtonType::PATTERN);
-        patternButtonsCount = patternNames.size();
+        patternButtonsCount = static_cast<int>(patternNames.size());
     }
 
     // Texte d'itération
@@ -150,7 +150,7 @@ void GraphicalDisplay::createButtonGroup(const std::vector<std::string>& names,i
 {
     size_t startIndex = buttons.size();
 
-    for (size_t i = 0; i < names.size(); ++i)
+    for (int i = 0; i < static_cast<int>(names.size()); ++i)
     {
         // Calcul de position
         int row, col;
@@ -167,7 +167,7 @@ void GraphicalDisplay::createButtonGroup(const std::vector<std::string>& names,i
         float y = startY + row * (buttonHeight + spacing);
 
         // Créer le bouton
-        sf::RectangleShape* button = new sf::RectangleShape(sf::Vector2f(buttonWidth, buttonHeight));
+        sf::RectangleShape* button = new sf::RectangleShape(sf::Vector2f(static_cast<float>(buttonWidth), static_cast<float>(buttonHeight)));
         button->setFillColor(sf::Color(100, 100, 200));
         button->setPosition(x, y);
         buttons.push_back(button);
@@ -235,11 +235,11 @@ void GraphicalDisplay::show(Grid* grid)
 
 void GraphicalDisplay::drawBorder(Grid* grid) const
 {
-    float width = grid->getCols() * cellSize;
-    float height = grid->getRows() * cellSize;
+    int width = grid->getCols() * cellSize;
+    int height = grid->getRows() * cellSize;
 
 
-    sf::RectangleShape border(sf::Vector2f(width, height));
+    sf::RectangleShape border(sf::Vector2f(static_cast<float>(width), static_cast<float>(height)));
     border.setPosition(0, 0);
     border.setFillColor(sf::Color::Transparent);
     border.setOutlineThickness(5.f);
@@ -249,7 +249,7 @@ void GraphicalDisplay::drawBorder(Grid* grid) const
 
 void GraphicalDisplay::drawButtons() const
 {
-    for (size_t i = 0; i < buttons.size(); ++i)
+    for (int i = 0; i < static_cast<int>(buttons.size()); ++i)
     {
         // Mettre en surbrillance le pattern sélectionné
         if (buttonTypes[i] == ButtonType::PATTERN)
@@ -285,7 +285,7 @@ void GraphicalDisplay::drawGrid(Grid* grid) const
             if (cellColor != Color::Transparent)
             {
                 cell.setFillColor(cellColor);
-                cell.setPosition(y * cellSize, x * cellSize);
+                cell.setPosition(static_cast<float>(y * cellSize), static_cast<float>(x * cellSize));
                 window->draw(cell);
             }
         }
@@ -341,7 +341,7 @@ void GraphicalDisplay::handleEvents(Grid* grid)
 
 void GraphicalDisplay::handleMouseClick(int mouseX, int mouseY, Grid* grid)
 {
-    Vector2f mousePos(mouseX, mouseY);
+    Vector2f mousePos(static_cast<float>(mouseX), static_cast<float>(mouseY));
 
     if (patternMode && mouseX < windowWidth && mouseY < windowHeight)
     {
@@ -350,7 +350,7 @@ void GraphicalDisplay::handleMouseClick(int mouseX, int mouseY, Grid* grid)
         selectedPatternIndex = -1;
         return;
     }
-    for (size_t i = 0; i < buttons.size(); ++i)
+    for (int i = 0; i < static_cast<int>(buttons.size()); ++i)
     {
         if (buttons[i]->getGlobalBounds().contains(mousePos))
         {
