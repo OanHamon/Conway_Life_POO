@@ -90,8 +90,8 @@ bool FileManager::saveGrid(const std::vector<std::vector<int>>& _grid) {
         return false;
     }
 
-    int rows = _grid.size();
-    int cols = _grid[0].size();
+    int rows = static_cast<int>(_grid.size());
+    int cols = static_cast<int>(_grid[0].size());
     for (const auto& r : _grid) {
         if ((int)r.size() != cols) {
             std::cerr << "Erreur: lignes de tailles différentes." << std::endl;
